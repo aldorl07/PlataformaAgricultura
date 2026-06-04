@@ -1,0 +1,10 @@
+{"level":"info","message":"MongoDB Connected: localhost","service":"chupaca-directo-api","timestamp":"2026-06-04 16:07:41"}
+{"level":"info","message":"Iniciando proceso de siembra de base de datos...","service":"chupaca-directo-api","timestamp":"2026-06-04 16:07:41"}
+{"level":"info","message":"Base de datos limpiada con éxito.","service":"chupaca-directo-api","timestamp":"2026-06-04 16:07:41"}
+{"level":"info","message":"Admin creado.","service":"chupaca-directo-api","timestamp":"2026-06-04 16:07:41"}
+{"level":"info","message":"5 Agricultores creados y verificados.","service":"chupaca-directo-api","timestamp":"2026-06-04 16:07:41"}
+{"level":"info","message":"3 Compradores creados.","service":"chupaca-directo-api","timestamp":"2026-06-04 16:07:42"}
+{"level":"info","message":"10 Precios referenciales de mercado (MIDAGRI) creados.","service":"chupaca-directo-api","timestamp":"2026-06-04 16:07:42"}
+{"level":"info","message":"15 Productos creados para los agricultores.","service":"chupaca-directo-api","timestamp":"2026-06-04 16:07:42"}
+{"level":"info","message":"3 Pedidos completados y sus respectivos SalesLog creados.","service":"chupaca-directo-api","timestamp":"2026-06-04 16:07:42"}
+{"level":"info","message":"Eventos de telemetría de prueba creados.","service":"chupaca-directo-api","timestamp":"2026-06-04 16:07:43"}

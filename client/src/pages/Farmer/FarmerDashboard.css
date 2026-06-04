@@ -1,0 +1,17 @@
+/* Farmer dashboard placeholder styles */
+
+.farmer-dashboard {
+  padding: 2rem;
+  text-align: center;
+}
+
+.farmer-dashboard .btn {
+  margin: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+}

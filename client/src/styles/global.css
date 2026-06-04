@@ -1,0 +1,237 @@
+@import './variables.css';
+@import './reset.css';
+
+/* Global HTML & Body Styles */
+body {
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+  font-family: var(--font-family-body);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+/* Typography Scale */
+.text-headline-lg {
+  font-family: var(--font-family-headings);
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 40px;
+  letter-spacing: -0.02em;
+  color: var(--color-primary);
+}
+
+.text-headline-md {
+  font-family: var(--font-family-headings);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+  letter-spacing: -0.01em;
+  color: var(--color-primary);
+}
+
+.text-body-lg {
+  font-family: var(--font-family-body);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 28px;
+}
+
+.text-body-md {
+  font-family: var(--font-family-body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.text-label-bold {
+  font-family: var(--font-family-body);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  letter-spacing: 0.02em;
+}
+
+.text-label-sm {
+  font-family: var(--font-family-body);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+/* UI Elements & Layouts */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-margin-mobile);
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding: 0 var(--spacing-margin-desktop);
+  }
+}
+
+/* Input Fields (Accessible & Thick focused border) */
+.form-group {
+  display: flex;
+  flex-col: column;
+  flex-direction: column;
+  gap: var(--spacing-stack-sm);
+  margin-bottom: var(--spacing-stack-md);
+}
+
+.form-label {
+  font-family: var(--font-family-body);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-on-surface-variant);
+  display: block;
+}
+
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  height: var(--spacing-touch-target-min);
+  padding: 0 16px;
+  background-color: var(--color-surface-container-lowest);
+  border: 2px solid var(--color-outline-variant);
+  border-radius: var(--border-radius-default);
+  color: var(--color-on-surface);
+  font-size: 16px;
+  transition: border-color var(--transition-default);
+}
+
+.form-textarea {
+  height: auto;
+  min-height: 100px;
+  padding: 12px 16px;
+  resize: vertical;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--color-secondary);
+  border-width: 2px;
+}
+
+.form-input::placeholder {
+  color: var(--color-outline);
+  opacity: 0.5;
+}
+
+/* Custom Buttons (Touch-target friendly) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: var(--spacing-touch-target-min);
+  padding: 0 24px;
+  border-radius: var(--border-radius-full);
+  font-family: var(--font-family-body);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-default);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-container);
+}
+
+.btn-secondary {
+  border: 2px solid var(--color-secondary);
+  color: var(--color-secondary);
+  background-color: transparent;
+}
+
+.btn-secondary:hover {
+  background-color: rgba(0, 110, 28, 0.05);
+}
+
+.btn-tertiary {
+  background-color: var(--color-tertiary);
+  color: var(--color-on-primary);
+}
+
+.btn-tertiary:hover {
+  background-color: var(--color-tertiary-container);
+}
+
+.btn-full {
+  width: 100%;
+}
+
+/* Bento Cards */
+.card {
+  background-color: var(--color-surface-container-lowest);
+  border: 1px solid rgba(114, 121, 110, 0.15); /* Earth outline low-opacity */
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-stack-lg);
+  box-shadow: var(--shadow-elevation-1);
+  transition: transform var(--transition-default), border-color var(--transition-default);
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  border-color: rgba(0, 110, 28, 0.3);
+}
+
+/* Badges & Chips */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: var(--border-radius-full);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-success {
+  background-color: var(--color-secondary-container);
+  color: var(--color-on-secondary-container);
+}
+
+.badge-info {
+  background-color: rgba(2, 136, 209, 0.15);
+  color: #0288d1;
+}
+
+.badge-warning {
+  background-color: var(--color-tertiary-fixed-dim);
+  color: var(--color-tertiary);
+}
+
+.badge-error {
+  background-color: var(--color-error-container);
+  color: var(--color-error);
+}
+
+/* Skeleton Loading Animation */
+.skeleton {
+  background: linear-gradient(90deg, var(--color-surface-container-low) 25%, var(--color-surface-container-high) 50%, var(--color-surface-container-low) 75%);
+  background-size: 200% 100%;
+  animation: loading-shimmer 1.5s infinite;
+  border-radius: var(--border-radius-default);
+}
+
+@keyframes loading-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
