@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'service_interfaces.dart';
 import '../features/auth/models/user_model.dart';
@@ -311,7 +310,7 @@ class FirebaseFirestoreService implements IFirestoreService {
       });
 
       if (status == 'completed') {
-        final volume = order.items.fold(0.0, (sum, item) => sum + item.quantity);
+        final volume = order.items.fold(0.0, (acc, item) => acc + item.quantity);
         final farmerId = order.items.isNotEmpty ? order.items.first.farmerId : '';
         final farmerDoc = await transaction.get(_db.collection(FirebaseConstants.users).doc(farmerId));
         final farmerCommunity = farmerDoc.exists ? (farmerDoc.data()?['farmerProfile']?['community'] ?? 'Chupaca') : 'Chupaca';
@@ -385,7 +384,6 @@ class FirebaseFirestoreService implements IFirestoreService {
   Future<Map<String, dynamic>> getResearchDashboardData() async {
     // Aggregated metrics from real Firebase
     final logsList = await getSalesLogs();
-    final farmersList = await getFarmers();
     final reach = await getReachStats();
 
     double totalRevenue = 0;
@@ -443,12 +441,9 @@ class FirebaseFirestoreService implements IFirestoreService {
 }
 
 class FirebaseStorageService implements IStorageService {
-  final FirebaseStorage _storage = FirebaseStorage.instance;
-
   @override
   Future<String> uploadProductPhoto(String filePath) async {
     // Real upload to Firebase Storage
-    final ref = _storage.ref().child('products/prod_${DateTime.now().millisecondsSinceEpoch}.jpg');
     // Using string/file upload (depending on environment)
     // Here we represent it as a mock-fallback for testing if file can't be uploaded directly
     throw UnimplementedError('Subida de imágenes nativa no configurada completamente');
@@ -481,7 +476,7 @@ class FirebaseTelemetryService implements ITelemetryService {
 
   @override
   Future<Map<String, dynamic>> getTelemetryAnalytics() async {
-    final query = await _db.collection(FirebaseConstants.telemetryEvents).get();
+    await _db.collection(FirebaseConstants.telemetryEvents).get();
     // compute metrics
     return {
       'avgPageLoadTime': 1.82,

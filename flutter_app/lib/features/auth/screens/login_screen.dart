@@ -73,7 +73,8 @@ class _LoginScreenState extends State<LoginScreen> {
             constraints: const BoxConstraints(maxWidth: 400),
             child: Card(
               elevation: 2,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
               child: Padding(
                 padding: const EdgeInsets.all(32.0),
                 child: Form(
@@ -101,11 +102,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         'Ingresa tus credenciales para continuar',
                         textAlign: TextAlign.center,
                         style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.onSurface.withOpacity(0.6),
+                          color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                         ),
                       ),
                       const SizedBox(height: 32),
-                      
+
                       // Email
                       AppTextField(
                         label: 'Correo Electrónico',
@@ -116,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         validator: Validators.validateEmail,
                       ),
                       const SizedBox(height: 20),
-                      
+
                       // Password
                       AppTextField(
                         label: 'Contraseña',
@@ -126,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         prefixIcon: Icons.lock_outline,
                         validator: Validators.validatePassword,
                       ),
-                      
+
                       const SizedBox(height: 8),
                       Align(
                         alignment: Alignment.centerRight,
@@ -136,20 +137,21 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      
+
                       // Submit Button
                       AppButton(
                         text: 'Ingresar',
                         isLoading: authProvider.isLoading,
                         onPressed: _submit,
                       ),
-                      
+
                       const SizedBox(height: 24),
                       Row(
                         children: [
                           Expanded(child: Divider(color: theme.dividerColor)),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
                             child: Text(
                               'o continuar con',
                               style: theme.textTheme.bodySmall,
@@ -159,12 +161,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         ],
                       ),
                       const SizedBox(height: 24),
-                      
+
                       // Google Sign In (mocked)
                       OutlinedButton.icon(
-                        icon: Image.network(
-                          'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_"G"_logo.svg/1024px-Google_"G"_logo.svg.png',
+                        icon: Image.asset(
+                          'assets/images/google_logo.png',
                           height: 20,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Icon(Icons.g_mobiledata, size: 20);
+                          },
                         ),
                         label: const Text('Iniciar sesión con Google'),
                         style: OutlinedButton.styleFrom(
@@ -174,13 +179,15 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         onPressed: () async {
-                          final success = await authProvider.signIn('buyer1@gmail.com', 'password123');
-                          if (success && mounted) {
-                            context.go('/catalog');
+                          final router = GoRouter.of(context);
+                          final success = await authProvider.signIn(
+                              'buyer1@gmail.com', 'password123');
+                          if (success) {
+                            router.go('/catalog');
                           }
                         },
                       ),
-                      
+
                       const SizedBox(height: 32),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

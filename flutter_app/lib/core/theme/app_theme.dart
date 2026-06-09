@@ -19,23 +19,35 @@ class AppTheme {
         onSurface: AppColors.neutralDark,
       ),
       textTheme: GoogleFonts.interTextTheme().copyWith(
-        displayLarge: GoogleFonts.outfit(fontWeight: FontWeight.bold, color: AppColors.neutralDark),
-        displayMedium: GoogleFonts.outfit(fontWeight: FontWeight.bold, color: AppColors.neutralDark),
-        displaySmall: GoogleFonts.outfit(fontWeight: FontWeight.w600, color: AppColors.neutralDark),
-        headlineLarge: GoogleFonts.outfit(fontWeight: FontWeight.w600, color: AppColors.neutralDark),
-        headlineMedium: GoogleFonts.outfit(fontWeight: FontWeight.w600, color: AppColors.neutralDark),
-        headlineSmall: GoogleFonts.outfit(fontWeight: FontWeight.w600, color: AppColors.neutralDark),
-        titleLarge: GoogleFonts.outfit(fontWeight: FontWeight.w600, color: AppColors.neutralDark),
-        titleMedium: GoogleFonts.inter(fontWeight: FontWeight.w500, color: AppColors.neutralDark),
-        titleSmall: GoogleFonts.inter(fontWeight: FontWeight.w500, color: AppColors.neutralDark),
-        bodyLarge: GoogleFonts.inter(color: AppColors.neutralDark, fontSize: 16),
-        bodyMedium: GoogleFonts.inter(color: AppColors.neutralDark, fontSize: 14),
-        bodySmall: GoogleFonts.inter(color: AppColors.neutralDark.withOpacity(0.7), fontSize: 12),
+        displayLarge: GoogleFonts.outfit(
+            fontWeight: FontWeight.bold, color: AppColors.neutralDark),
+        displayMedium: GoogleFonts.outfit(
+            fontWeight: FontWeight.bold, color: AppColors.neutralDark),
+        displaySmall: GoogleFonts.outfit(
+            fontWeight: FontWeight.w600, color: AppColors.neutralDark),
+        headlineLarge: GoogleFonts.outfit(
+            fontWeight: FontWeight.w600, color: AppColors.neutralDark),
+        headlineMedium: GoogleFonts.outfit(
+            fontWeight: FontWeight.w600, color: AppColors.neutralDark),
+        headlineSmall: GoogleFonts.outfit(
+            fontWeight: FontWeight.w600, color: AppColors.neutralDark),
+        titleLarge: GoogleFonts.outfit(
+            fontWeight: FontWeight.w600, color: AppColors.neutralDark),
+        titleMedium: GoogleFonts.inter(
+            fontWeight: FontWeight.w500, color: AppColors.neutralDark),
+        titleSmall: GoogleFonts.inter(
+            fontWeight: FontWeight.w500, color: AppColors.neutralDark),
+        bodyLarge:
+            GoogleFonts.inter(color: AppColors.neutralDark, fontSize: 16),
+        bodyMedium:
+            GoogleFonts.inter(color: AppColors.neutralDark, fontSize: 14),
+        bodySmall: GoogleFonts.inter(
+            color: AppColors.neutralDark.withValues(alpha: 0.7), fontSize: 12),
       ),
       cardTheme: CardThemeData(
         color: AppColors.surfaceCard,
         elevation: 1,
-        shadowColor: Colors.black.withOpacity(0.08),
+        shadowColor: Colors.black.withValues(alpha: 0.08),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
@@ -74,14 +86,17 @@ class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: Colors.white,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: AppColors.neutralDark.withOpacity(0.15)),
+          borderSide:
+              BorderSide(color: AppColors.neutralDark.withValues(alpha: 0.15)),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: AppColors.neutralDark.withOpacity(0.15)),
+          borderSide:
+              BorderSide(color: AppColors.neutralDark.withValues(alpha: 0.15)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -95,7 +110,8 @@ class AppTheme {
           borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(color: AppColors.error, width: 2),
         ),
-        labelStyle: GoogleFonts.inter(color: AppColors.neutralDark.withOpacity(0.6), fontSize: 14),
+        labelStyle: GoogleFonts.inter(
+            color: AppColors.neutralDark.withValues(alpha: 0.6), fontSize: 14),
         errorStyle: GoogleFonts.inter(color: AppColors.error, fontSize: 12),
       ),
       pageTransitionsTheme: const PageTransitionsTheme(
@@ -127,14 +143,22 @@ class AppTheme {
         onSurface: Colors.white,
       ),
       textTheme: GoogleFonts.interTextTheme().copyWith(
-        displayLarge: GoogleFonts.outfit(fontWeight: FontWeight.bold, color: Colors.white),
-        displayMedium: GoogleFonts.outfit(fontWeight: FontWeight.bold, color: Colors.white),
-        displaySmall: GoogleFonts.outfit(fontWeight: FontWeight.w600, color: Colors.white),
-        headlineLarge: GoogleFonts.outfit(fontWeight: FontWeight.w600, color: Colors.white),
-        headlineMedium: GoogleFonts.outfit(fontWeight: FontWeight.w600, color: Colors.white),
-        headlineSmall: GoogleFonts.outfit(fontWeight: FontWeight.w600, color: Colors.white),
-        titleLarge: GoogleFonts.outfit(fontWeight: FontWeight.w600, color: Colors.white),
-        titleMedium: GoogleFonts.inter(fontWeight: FontWeight.w500, color: Colors.white),
+        displayLarge: GoogleFonts.outfit(
+            fontWeight: FontWeight.bold, color: Colors.white),
+        displayMedium: GoogleFonts.outfit(
+            fontWeight: FontWeight.bold, color: Colors.white),
+        displaySmall: GoogleFonts.outfit(
+            fontWeight: FontWeight.w600, color: Colors.white),
+        headlineLarge: GoogleFonts.outfit(
+            fontWeight: FontWeight.w600, color: Colors.white),
+        headlineMedium: GoogleFonts.outfit(
+            fontWeight: FontWeight.w600, color: Colors.white),
+        headlineSmall: GoogleFonts.outfit(
+            fontWeight: FontWeight.w600, color: Colors.white),
+        titleLarge: GoogleFonts.outfit(
+            fontWeight: FontWeight.w600, color: Colors.white),
+        titleMedium:
+            GoogleFonts.inter(fontWeight: FontWeight.w500, color: Colors.white),
         bodyLarge: GoogleFonts.inter(color: Colors.white, fontSize: 16),
         bodyMedium: GoogleFonts.inter(color: Colors.white, fontSize: 14),
         bodySmall: GoogleFonts.inter(color: Colors.white70, fontSize: 12),
@@ -164,14 +188,15 @@ class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: const Color(0xFF333333),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.white.withOpacity(0.15)),
+          borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.15)),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.white.withOpacity(0.15)),
+          borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.15)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),

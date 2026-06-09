@@ -34,8 +34,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-    
+
     final catalog = Provider.of<CatalogProvider>(context);
     final cart = Provider.of<CartProvider>(context);
     final auth = Provider.of<AuthProvider>(context);
@@ -61,12 +60,16 @@ class _CatalogScreenState extends State<CatalogScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // Crop Type Accordion
-                  Text('Tipo de Cultivo', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                  Text('Tipo de Cultivo',
+                      style: theme.textTheme.titleMedium
+                          ?.copyWith(fontWeight: FontWeight.bold)),
                   const SizedBox(height: 10),
                   DropdownButtonFormField<String>(
                     initialValue: catalog.selectedCropType,
                     items: ['todos', ...AppConstants.cropTypes].map((c) {
-                      final name = c == 'todos' ? 'Todos los cultivos' : (AppConstants.cropNames[c] ?? c);
+                      final name = c == 'todos'
+                          ? 'Todos los cultivos'
+                          : (AppConstants.cropNames[c] ?? c);
                       return DropdownMenuItem(value: c, child: Text(name));
                     }).toList(),
                     onChanged: (val) {
@@ -76,13 +79,19 @@ class _CatalogScreenState extends State<CatalogScreen> {
                   const SizedBox(height: 24),
 
                   // Community Filter
-                  Text('Comunidad de Origen', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                  Text('Comunidad de Origen',
+                      style: theme.textTheme.titleMedium
+                          ?.copyWith(fontWeight: FontWeight.bold)),
                   const SizedBox(height: 10),
                   DropdownButtonFormField<String>(
-                    initialValue: catalog.selectedCommunity.isEmpty ? 'todos' : catalog.selectedCommunity,
+                    initialValue: catalog.selectedCommunity.isEmpty
+                        ? 'todos'
+                        : catalog.selectedCommunity,
                     items: [
-                      const DropdownMenuItem(value: 'todos', child: Text('Todas las comunidades')),
-                      ...AppConstants.communities.map((c) => DropdownMenuItem(value: c, child: Text(c))),
+                      const DropdownMenuItem(
+                          value: 'todos', child: Text('Todas las comunidades')),
+                      ...AppConstants.communities.map(
+                          (c) => DropdownMenuItem(value: c, child: Text(c))),
                     ],
                     onChanged: (val) {
                       if (val != null) {
@@ -93,14 +102,17 @@ class _CatalogScreenState extends State<CatalogScreen> {
                   const SizedBox(height: 24),
 
                   // Price Range slider
-                  Text('Rango de Precios (S/.)', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                  Text('Rango de Precios (S/.)',
+                      style: theme.textTheme.titleMedium
+                          ?.copyWith(fontWeight: FontWeight.bold)),
                   RangeSlider(
                     values: RangeValues(_minPrice, _maxPrice),
                     min: 0.5,
                     max: 20.0,
                     divisions: 39,
                     activeColor: AppColors.primaryDark,
-                    labels: RangeLabels('S/. ${_minPrice.toStringAsFixed(1)}', 'S/. ${_maxPrice.toStringAsFixed(1)}'),
+                    labels: RangeLabels('S/. ${_minPrice.toStringAsFixed(1)}',
+                        'S/. ${_maxPrice.toStringAsFixed(1)}'),
                     onChanged: (RangeValues vals) {
                       setState(() {
                         _minPrice = vals.start;
@@ -121,7 +133,9 @@ class _CatalogScreenState extends State<CatalogScreen> {
                   const SizedBox(height: 24),
 
                   // Min stock
-                  Text('Volumen Disponible Mínimo', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                  Text('Volumen Disponible Mínimo',
+                      style: theme.textTheme.titleMedium
+                          ?.copyWith(fontWeight: FontWeight.bold)),
                   Slider(
                     value: catalog.minStock.clamp(0.0, 500.0),
                     min: 0,
@@ -133,13 +147,15 @@ class _CatalogScreenState extends State<CatalogScreen> {
                       catalog.setMinStock(val);
                     },
                   ),
-                  Text('${catalog.minStock.toInt()} unidades disponibles mínimo'),
+                  Text(
+                      '${catalog.minStock.toInt()} unidades disponibles mínimo'),
                   const SizedBox(height: 24),
 
                   // Only verified toggle
                   SwitchListTile(
                     title: const Text('Solo Productores Verificados'),
-                    subtitle: const Text('Muestra agricultores validados por UNCP'),
+                    subtitle:
+                        const Text('Muestra agricultores validados por UNCP'),
                     value: catalog.onlyVerified,
                     activeThumbColor: AppColors.primaryDark,
                     contentPadding: EdgeInsets.zero,
@@ -171,11 +187,31 @@ class _CatalogScreenState extends State<CatalogScreen> {
 
     // Ticker items
     final tickerItems = [
-      const MarketTickerItem(cropName: 'Papa Yungay', wholesalePrice: 1.80, platformPrice: 1.35, savingPercent: 25),
-      const MarketTickerItem(cropName: 'Maíz Choclo', wholesalePrice: 2.50, platformPrice: 1.90, savingPercent: 24),
-      const MarketTickerItem(cropName: 'Cebada Grano', wholesalePrice: 2.00, platformPrice: 1.50, savingPercent: 25),
-      const MarketTickerItem(cropName: 'Habas Verdes', wholesalePrice: 3.20, platformPrice: 2.40, savingPercent: 25),
-      const MarketTickerItem(cropName: 'Zanahoria', wholesalePrice: 1.60, platformPrice: 1.20, savingPercent: 25),
+      const MarketTickerItem(
+          cropName: 'Papa Yungay',
+          wholesalePrice: 1.80,
+          platformPrice: 1.35,
+          savingPercent: 25),
+      const MarketTickerItem(
+          cropName: 'Maíz Choclo',
+          wholesalePrice: 2.50,
+          platformPrice: 1.90,
+          savingPercent: 24),
+      const MarketTickerItem(
+          cropName: 'Cebada Grano',
+          wholesalePrice: 2.00,
+          platformPrice: 1.50,
+          savingPercent: 25),
+      const MarketTickerItem(
+          cropName: 'Habas Verdes',
+          wholesalePrice: 3.20,
+          platformPrice: 2.40,
+          savingPercent: 25),
+      const MarketTickerItem(
+          cropName: 'Zanahoria',
+          wholesalePrice: 1.60,
+          platformPrice: 1.20,
+          savingPercent: 25),
     ];
 
     return Scaffold(
@@ -192,14 +228,19 @@ class _CatalogScreenState extends State<CatalogScreen> {
               icon: const Icon(Icons.logout),
               tooltip: 'Cerrar Sesión',
               onPressed: () async {
+                final router = GoRouter.of(context);
+                ScaffoldMessenger.of(context).clearSnackBars();
                 await auth.signOut();
-                if (mounted) context.go('/');
+                router.go('/');
               },
             ),
           ] else ...[
             TextButton(
               onPressed: () => context.push('/login'),
-              child: const Text('Iniciar Sesión', style: TextStyle(color: AppColors.primaryDark, fontWeight: FontWeight.bold)),
+              child: const Text('Iniciar Sesión',
+                  style: TextStyle(
+                      color: AppColors.primaryDark,
+                      fontWeight: FontWeight.bold)),
             ),
           ],
         ],
@@ -209,7 +250,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
         children: [
           // 1. Transparency Ticker
           MarketTicker(items: tickerItems),
-          
+
           // 2. Search Bar + Filters Trigger Button
           Padding(
             padding: const EdgeInsets.all(16.0),
@@ -243,7 +284,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: AppColors.primaryDark.withOpacity(0.1),
+                        color: AppColors.primaryDark.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: const Icon(
@@ -272,7 +313,10 @@ class _CatalogScreenState extends State<CatalogScreen> {
           ? bg.Badge(
               badgeContent: Text(
                 cart.items.length.toString(),
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12),
               ),
               position: bg.BadgePosition.topEnd(top: -4, end: -4),
               child: FloatingActionButton(
@@ -283,7 +327,9 @@ class _CatalogScreenState extends State<CatalogScreen> {
                     context.push('/buyer/simulator');
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Por favor, inicie sesión para ver su cotización')),
+                      const SnackBar(
+                          content: Text(
+                              'Por favor, inicie sesión para ver su cotización')),
                     );
                     context.push('/login');
                   }
@@ -305,7 +351,8 @@ class _CatalogScreenState extends State<CatalogScreen> {
         mainAxisSpacing: 12,
       ),
       itemCount: 6,
-      itemBuilder: (context, index) => SkeletonLoader.productCard(context: context),
+      itemBuilder: (context, index) =>
+          SkeletonLoader.productCard(context: context),
     );
   }
 
@@ -316,9 +363,11 @@ class _CatalogScreenState extends State<CatalogScreen> {
         children: [
           Icon(Icons.eco_outlined, size: 64, color: Colors.grey[400]),
           const SizedBox(height: 16),
-          const Text('No se encontraron cultivos frescos', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          const Text('No se encontraron cultivos frescos',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
-          const Text('Pruebe modificando los filtros o el término de búsqueda', style: TextStyle(color: Colors.grey)),
+          const Text('Pruebe modificando los filtros o el término de búsqueda',
+              style: TextStyle(color: Colors.grey)),
         ],
       ),
     );
@@ -346,7 +395,31 @@ class _CatalogScreenState extends State<CatalogScreen> {
           farmerName: farmerName,
           farmerCommunity: community,
           isFarmerVerified: isVerified,
-          onTap: () => context.push('/catalog/${product.id}'),
+          onTap: () async {
+            final added = await context.push<bool>('/catalog/${product.id}');
+            if (added == true && context.mounted) {
+              ScaffoldMessenger.of(context).clearSnackBars();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('${product.name} agregado a la cotización'),
+                  duration: const Duration(seconds: 3),
+                  action: SnackBarAction(
+                    label: 'Ver',
+                    textColor: Colors.white,
+                    onPressed: () {
+                      final auth =
+                          Provider.of<AuthProvider>(context, listen: false);
+                      if (auth.isAuthenticated) {
+                        context.push('/buyer/simulator');
+                      } else {
+                        context.push('/login');
+                      }
+                    },
+                  ),
+                ),
+              );
+            }
+          },
           onAddToCart: () {
             cart.addToCart(product, farmerName);
             ScaffoldMessenger.of(context).showSnackBar(
@@ -357,7 +430,8 @@ class _CatalogScreenState extends State<CatalogScreen> {
                   label: 'Ver',
                   textColor: Colors.white,
                   onPressed: () {
-                    final auth = Provider.of<AuthProvider>(context, listen: false);
+                    final auth =
+                        Provider.of<AuthProvider>(context, listen: false);
                     if (auth.isAuthenticated) {
                       context.push('/buyer/simulator');
                     } else {

@@ -40,7 +40,9 @@ class AppButton extends StatelessWidget {
             child: CircularProgressIndicator(
               strokeWidth: 2.5,
               valueColor: AlwaysStoppedAnimation<Color>(
-                isOutlined ? (foregroundColor ?? theme.primaryColor) : Colors.white,
+                isOutlined
+                    ? (foregroundColor ?? theme.primaryColor)
+                    : Colors.white,
               ),
             ),
           ),
@@ -61,7 +63,8 @@ class AppButton extends StatelessWidget {
           onPressed: isLoading ? null : onPressed,
           style: OutlinedButton.styleFrom(
             foregroundColor: foregroundColor ?? theme.primaryColor,
-            side: BorderSide(color: foregroundColor ?? theme.primaryColor, width: 1.5),
+            side: BorderSide(
+                color: foregroundColor ?? theme.primaryColor, width: 1.5),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),

@@ -26,13 +26,16 @@ class _FarmerDashboardScreenState extends State<FarmerDashboardScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final auth = Provider.of<AuthProvider>(context, listen: false);
       if (auth.isAuthenticated) {
-        Provider.of<FarmerProvider>(context, listen: false).loadFarmerData(auth.currentUser!.id);
+        Provider.of<FarmerProvider>(context, listen: false)
+            .loadFarmerData(auth.currentUser!.id);
       }
     });
   }
 
-  void _showQuickStockUpdate(BuildContext context, String productId, double currentStock, FarmerProvider farmerProvider) {
-    final controller = TextEditingController(text: currentStock.toInt().toString());
+  void _showQuickStockUpdate(BuildContext context, String productId,
+      double currentStock, FarmerProvider farmerProvider) {
+    final controller =
+        TextEditingController(text: currentStock.toInt().toString());
     showDialog(
       context: context,
       builder: (context) {
@@ -76,8 +79,10 @@ class _FarmerDashboardScreenState extends State<FarmerDashboardScreen> {
     final farmer = Provider.of<FarmerProvider>(context);
 
     // Filter farmer orders for display
-    final pendingOrders = farmer.myOrders.where((o) => o.status == 'pending').toList();
-    final otherOrders = farmer.myOrders.where((o) => o.status != 'pending').toList();
+    final pendingOrders =
+        farmer.myOrders.where((o) => o.status == 'pending').toList();
+    final otherOrders =
+        farmer.myOrders.where((o) => o.status != 'pending').toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -90,8 +95,10 @@ class _FarmerDashboardScreenState extends State<FarmerDashboardScreen> {
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () async {
+              final router = GoRouter.of(context);
+              ScaffoldMessenger.of(context).clearSnackBars();
               await auth.signOut();
-              if (mounted) context.go('/');
+              router.go('/');
             },
           ),
         ],
@@ -125,7 +132,7 @@ class _FarmerDashboardScreenState extends State<FarmerDashboardScreen> {
                   ),
                 ],
               ),
-            
+
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(24.0),
@@ -135,11 +142,13 @@ class _FarmerDashboardScreenState extends State<FarmerDashboardScreen> {
                     // Welcome Title
                     Text(
                       '¡Hola, ${auth.currentUser?.fullName.split(' ').first}! 🌿',
-                      style: theme.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
+                      style: theme.textTheme.headlineMedium
+                          ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     Text(
                       'Comunidad: ${auth.currentUser?.farmerProfile?.community ?? "Chupaca"}',
-                      style: theme.textTheme.bodyMedium?.copyWith(color: Colors.grey),
+                      style: theme.textTheme.bodyMedium
+                          ?.copyWith(color: Colors.grey),
                     ),
                     const SizedBox(height: 24),
 
@@ -147,17 +156,26 @@ class _FarmerDashboardScreenState extends State<FarmerDashboardScreen> {
                     GridView.count(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      crossAxisCount: MediaQuery.of(context).size.width > 600 ? 4 : 2,
+                      crossAxisCount:
+                          MediaQuery.of(context).size.width > 600 ? 4 : 2,
                       crossAxisSpacing: 16,
                       mainAxisSpacing: 16,
                       childAspectRatio: 1.4,
                       children: [
                         KpiCard(
                           title: 'Ventas del Mes',
-                          value: CurrencyFormatter.formatShort(farmer.monthlyRevenue),
+                          value: CurrencyFormatter.formatShort(
+                              farmer.monthlyRevenue),
                           trendPercentage: 12.5,
                           icon: Icons.monetization_on_outlined,
-                          sparklineData: const [400, 600, 800, 1200, 1500, 1800],
+                          sparklineData: const [
+                            400,
+                            600,
+                            800,
+                            1200,
+                            1500,
+                            1800
+                          ],
                         ),
                         KpiCard(
                           title: 'Pedidos Pendientes',
@@ -201,19 +219,27 @@ class _FarmerDashboardScreenState extends State<FarmerDashboardScreen> {
                           final item = farmer.stockAlerts[index];
                           return Card(
                             margin: const EdgeInsets.only(bottom: 8),
-                            color: isDark ? const Color(0xFF3E1F1F) : const Color(0xFFFFEBEE),
+                            color: isDark
+                                ? const Color(0xFF3E1F1F)
+                                : const Color(0xFFFFEBEE),
                             child: ListTile(
-                              leading: const Icon(Icons.warning_amber_rounded, color: AppColors.error),
+                              leading: const Icon(Icons.warning_amber_rounded,
+                                  color: AppColors.error),
                               title: Text(
                                 item.name,
-                                style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.error),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.error),
                               ),
-                              subtitle: Text('Stock actual: ${item.stock.toInt()} ${item.unit}'),
+                              subtitle: Text(
+                                  'Stock actual: ${item.stock.toInt()} ${item.unit}'),
                               trailing: TextButton.icon(
                                 icon: const Icon(Icons.edit, size: 16),
                                 label: const Text('Actualizar'),
-                                style: TextButton.styleFrom(foregroundColor: AppColors.error),
-                                onPressed: () => _showQuickStockUpdate(context, item.id, item.stock, farmer),
+                                style: TextButton.styleFrom(
+                                    foregroundColor: AppColors.error),
+                                onPressed: () => _showQuickStockUpdate(
+                                    context, item.id, item.stock, farmer),
                               ),
                             ),
                           );
@@ -224,7 +250,8 @@ class _FarmerDashboardScreenState extends State<FarmerDashboardScreen> {
 
                     // 3. Line Chart (Pre vs Post Platform Profitability comparison - Y3)
                     Card(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16)),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
@@ -232,30 +259,46 @@ class _FarmerDashboardScreenState extends State<FarmerDashboardScreen> {
                           children: [
                             Text(
                               'Historial de Ingresos Mensuales (S/.)',
-                              style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                              style: theme.textTheme.titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 8),
                             const Row(
                               children: [
-                                Icon(Icons.circle, color: Colors.grey, size: 14),
+                                Icon(Icons.circle,
+                                    color: Colors.grey, size: 14),
                                 SizedBox(width: 4),
-                                Text('Pre-Plataforma (Intermediarios)', style: TextStyle(fontSize: 11, color: Colors.grey)),
+                                Text('Pre-Plataforma (Intermediarios)',
+                                    style: TextStyle(
+                                        fontSize: 11, color: Colors.grey)),
                                 SizedBox(width: 16),
-                                Icon(Icons.circle, color: AppColors.primaryLight, size: 14),
+                                Icon(Icons.circle,
+                                    color: AppColors.primaryLight, size: 14),
                                 SizedBox(width: 4),
-                                Text('Con Plataforma (Venta Directa)', style: TextStyle(fontSize: 11, color: AppColors.primaryLight)),
+                                Text('Con Plataforma (Venta Directa)',
+                                    style: TextStyle(
+                                        fontSize: 11,
+                                        color: AppColors.primaryLight)),
                               ],
                             ),
                             const SizedBox(height: 24),
                             AspectRatio(
-                              aspectRatio: MediaQuery.of(context).size.width > 600 ? 3 : 1.7,
+                              aspectRatio:
+                                  MediaQuery.of(context).size.width > 600
+                                      ? 3
+                                      : 1.7,
                               child: LineChart(
                                 LineChartData(
-                                  gridData: const FlGridData(show: true, drawVerticalLine: false),
+                                  gridData: const FlGridData(
+                                      show: true, drawVerticalLine: false),
                                   borderData: FlBorderData(show: false),
                                   titlesData: const FlTitlesData(
-                                    topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                                    rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                                    topTitles: AxisTitles(
+                                        sideTitles:
+                                            SideTitles(showTitles: false)),
+                                    rightTitles: AxisTitles(
+                                        sideTitles:
+                                            SideTitles(showTitles: false)),
                                   ),
                                   lineBarsData: [
                                     // Historical baseline (Pre-platform intermediation)
@@ -302,14 +345,17 @@ class _FarmerDashboardScreenState extends State<FarmerDashboardScreen> {
                     // 4. Pending Orders Section (Variable RF-09)
                     Text(
                       'Pedidos Pendientes de Confirmación',
-                      style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                      style: theme.textTheme.titleMedium
+                          ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 12),
                     pendingOrders.isEmpty
                         ? const Card(
                             child: Padding(
                               padding: EdgeInsets.all(24.0),
-                              child: Center(child: Text('No tienes pedidos pendientes de aprobación.')),
+                              child: Center(
+                                  child: Text(
+                                      'No tienes pedidos pendientes de aprobación.')),
                             ),
                           )
                         : ListView.builder(
@@ -320,18 +366,22 @@ class _FarmerDashboardScreenState extends State<FarmerDashboardScreen> {
                               final order = pendingOrders[index];
                               return Card(
                                 margin: const EdgeInsets.only(bottom: 12),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12)),
                                 child: Padding(
                                   padding: const EdgeInsets.all(16.0),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
                                     children: [
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
                                             'Pedido #${order.id.substring(0, 8)}',
-                                            style: const TextStyle(fontWeight: FontWeight.bold),
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
                                           ),
                                           StatusBadge(status: order.status),
                                         ],
@@ -339,7 +389,8 @@ class _FarmerDashboardScreenState extends State<FarmerDashboardScreen> {
                                       const Divider(height: 20),
                                       ...order.items.map((item) => Text(
                                             '• ${item.quantity.toInt()} ${item.unit} de ${item.productName}',
-                                            style: const TextStyle(fontSize: 13),
+                                            style:
+                                                const TextStyle(fontSize: 13),
                                           )),
                                       const SizedBox(height: 12),
                                       Text(
@@ -358,16 +409,25 @@ class _FarmerDashboardScreenState extends State<FarmerDashboardScreen> {
                                               isOutlined: true,
                                               foregroundColor: Colors.grey,
                                               height: 36,
-                                              onPressed: () => farmer.updateStatus(order.id, 'cancelled', auth.currentUser!.id),
+                                              onPressed: () =>
+                                                  farmer.updateStatus(
+                                                      order.id,
+                                                      'cancelled',
+                                                      auth.currentUser!.id),
                                             ),
                                           ),
                                           const SizedBox(width: 12),
                                           Expanded(
                                             child: AppButton(
                                               text: '✓ Aprobar',
-                                              backgroundColor: AppColors.primaryLight,
+                                              backgroundColor:
+                                                  AppColors.primaryLight,
                                               height: 36,
-                                              onPressed: () => farmer.updateStatus(order.id, 'approved', auth.currentUser!.id),
+                                              onPressed: () =>
+                                                  farmer.updateStatus(
+                                                      order.id,
+                                                      'approved',
+                                                      auth.currentUser!.id),
                                             ),
                                           ),
                                         ],
@@ -383,13 +443,16 @@ class _FarmerDashboardScreenState extends State<FarmerDashboardScreen> {
                     // 5. Historial Orders List
                     Text(
                       'Historial de Despachos',
-                      style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                      style: theme.textTheme.titleMedium
+                          ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 12),
                     otherOrders.isEmpty
-                        ? const Center(child: Padding(
+                        ? const Center(
+                            child: Padding(
                             padding: EdgeInsets.all(16.0),
-                            child: Text('No hay registros de despachos previos.'),
+                            child:
+                                Text('No hay registros de despachos previos.'),
                           ))
                         : ListView.builder(
                             shrinkWrap: true,
@@ -399,8 +462,10 @@ class _FarmerDashboardScreenState extends State<FarmerDashboardScreen> {
                               final order = otherOrders[index];
                               return Card(
                                 child: ListTile(
-                                  title: Text('Pedido #${order.id.substring(0, 8)}'),
-                                  subtitle: Text('Total: S/. ${order.totalAmount.toStringAsFixed(2)}'),
+                                  title: Text(
+                                      'Pedido #${order.id.substring(0, 8)}'),
+                                  subtitle: Text(
+                                      'Total: S/. ${order.totalAmount.toStringAsFixed(2)}'),
                                   trailing: StatusBadge(status: order.status),
                                   onTap: () {
                                     if (order.status == 'approved') {
@@ -409,18 +474,26 @@ class _FarmerDashboardScreenState extends State<FarmerDashboardScreen> {
                                         context: context,
                                         builder: (context) => AlertDialog(
                                           title: const Text('Coordinar Envío'),
-                                          content: const Text('¿Desea marcar este pedido como despachado hacia el destino de entrega?'),
+                                          content: const Text(
+                                              '¿Desea marcar este pedido como despachado hacia el destino de entrega?'),
                                           actions: [
                                             TextButton(
-                                              onPressed: () => Navigator.of(context).pop(),
+                                              onPressed: () =>
+                                                  Navigator.of(context).pop(),
                                               child: const Text('No'),
                                             ),
                                             ElevatedButton(
                                               onPressed: () async {
-                                                await farmer.updateStatus(order.id, 'dispatched', auth.currentUser!.id);
-                                                if (context.mounted) Navigator.of(context).pop();
+                                                await farmer.updateStatus(
+                                                    order.id,
+                                                    'dispatched',
+                                                    auth.currentUser!.id);
+                                                if (context.mounted) {
+                                                  Navigator.of(context).pop();
+                                                }
                                               },
-                                              child: const Text('Sí, Despachar'),
+                                              child:
+                                                  const Text('Sí, Despachar'),
                                             ),
                                           ],
                                         ),

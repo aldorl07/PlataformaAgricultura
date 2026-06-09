@@ -16,7 +16,8 @@ class BuyerOrdersScreen extends StatefulWidget {
   State<BuyerOrdersScreen> createState() => _BuyerOrdersScreenState();
 }
 
-class _BuyerOrdersScreenState extends State<BuyerOrdersScreen> with SingleTickerProviderStateMixin {
+class _BuyerOrdersScreenState extends State<BuyerOrdersScreen>
+    with SingleTickerProviderStateMixin {
   late final TabController _tabController;
   List<OrderModel> _orders = [];
   bool _isLoading = false;
@@ -55,13 +56,15 @@ class _BuyerOrdersScreenState extends State<BuyerOrdersScreen> with SingleTicker
     final auth = Provider.of<AuthProvider>(context, listen: false);
     setState(() => _isLoading = true);
     try {
-      await ServiceLocator.firestoreService.updateOrderStatus(orderId, 'completed', auth.currentUser!.id);
+      await ServiceLocator.firestoreService
+          .updateOrderStatus(orderId, 'completed', auth.currentUser!.id);
       await _loadOrders(); // reload
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Recepción confirmada. Se ha registrado en la base de datos inmutable.'),
+            content: Text(
+                'Recepción confirmada. Se ha registrado en la base de datos inmutable.'),
             backgroundColor: AppColors.primaryLight,
           ),
         );
@@ -69,7 +72,8 @@ class _BuyerOrdersScreenState extends State<BuyerOrdersScreen> with SingleTicker
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e'), backgroundColor: AppColors.error),
+          SnackBar(
+              content: Text('Error: $e'), backgroundColor: AppColors.error),
         );
       }
     }
@@ -78,10 +82,12 @@ class _BuyerOrdersScreenState extends State<BuyerOrdersScreen> with SingleTicker
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    final activeOrders = _orders.where((o) => o.status != 'completed' && o.status != 'cancelled').toList();
-    final pastOrders = _orders.where((o) => o.status == 'completed' || o.status == 'cancelled').toList();
+    final activeOrders = _orders
+        .where((o) => o.status != 'completed' && o.status != 'cancelled')
+        .toList();
+    final pastOrders = _orders
+        .where((o) => o.status == 'completed' || o.status == 'cancelled')
+        .toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -115,10 +121,13 @@ class _BuyerOrdersScreenState extends State<BuyerOrdersScreen> with SingleTicker
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.shopping_bag_outlined, size: 64, color: Colors.grey[400]),
+            Icon(Icons.shopping_bag_outlined,
+                size: 64, color: Colors.grey[400]),
             const SizedBox(height: 16),
             Text(
-              isTabActive ? 'No tienes pedidos activos' : 'No tienes pedidos anteriores',
+              isTabActive
+                  ? 'No tienes pedidos activos'
+                  : 'No tienes pedidos anteriores',
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ],
@@ -133,7 +142,8 @@ class _BuyerOrdersScreenState extends State<BuyerOrdersScreen> with SingleTicker
         final order = list[index];
         return Card(
           margin: const EdgeInsets.only(bottom: 16),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           child: ExpansionTile(
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -149,10 +159,13 @@ class _BuyerOrdersScreenState extends State<BuyerOrdersScreen> with SingleTicker
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 4),
-                Text('Fecha: ${DateFormat('dd/MM/yyyy HH:mm').format(order.createdAt)}'),
+                Text(
+                    'Fecha: ${DateFormat('dd/MM/yyyy HH:mm').format(order.createdAt)}'),
                 Text(
                   'Total: S/. ${order.totalAmount.toStringAsFixed(2)}',
-                  style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.primaryDark),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryDark),
                 ),
               ],
             ),
@@ -163,32 +176,39 @@ class _BuyerOrdersScreenState extends State<BuyerOrdersScreen> with SingleTicker
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const Divider(),
-                    const Text('Detalle de Cultivos', style: TextStyle(fontWeight: FontWeight.bold)),
+                    const Text('Detalle de Cultivos',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
                     const SizedBox(height: 8),
                     ...order.items.map((item) => Padding(
                           padding: const EdgeInsets.symmetric(vertical: 4.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('${item.quantity.toInt()} ${item.unit} x ${item.productName}'),
+                              Text(
+                                  '${item.quantity.toInt()} ${item.unit} x ${item.productName}'),
                               Text(CurrencyFormatter.format(item.lineTotal)),
                             ],
                           ),
                         )),
                     const Divider(),
-                    _buildDetailRow('Subtotal de Productos', CurrencyFormatter.format(order.subtotal)),
-                    _buildDetailRow('Flete de Envío', CurrencyFormatter.format(order.shippingCost)),
-                    _buildDetailRow('Comisión Plataforma (2%)', CurrencyFormatter.format(order.platformFee)),
+                    _buildDetailRow('Subtotal de Productos',
+                        CurrencyFormatter.format(order.subtotal)),
+                    _buildDetailRow('Flete de Envío',
+                        CurrencyFormatter.format(order.shippingCost)),
+                    _buildDetailRow('Comisión Plataforma (2%)',
+                        CurrencyFormatter.format(order.platformFee)),
                     const SizedBox(height: 8),
-                    _buildDetailRow('Total Pagado', CurrencyFormatter.format(order.totalAmount), isBold: true),
-                    
+                    _buildDetailRow('Total Pagado',
+                        CurrencyFormatter.format(order.totalAmount),
+                        isBold: true),
+
                     // Savings badge (Variable Y2)
                     if (order.estimatedSavings > 0) ...[
                       const SizedBox(height: 12),
                       Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: AppColors.primaryLight.withOpacity(0.1),
+                          color: AppColors.primaryLight.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
@@ -203,17 +223,19 @@ class _BuyerOrdersScreenState extends State<BuyerOrdersScreen> with SingleTicker
                       ),
                     ],
                     const Divider(),
-                    
+
                     // Delivery Info
-                    const Text('Datos de Entrega', style: TextStyle(fontWeight: FontWeight.bold)),
+                    const Text('Datos de Entrega',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
                     const SizedBox(height: 6),
                     Text('Dirección: ${order.deliveryAddress}'),
                     if (order.deliveryDate != null)
-                      Text('Fecha programada: ${DateFormat('dd/MM/yyyy').format(order.deliveryDate!)}'),
+                      Text(
+                          'Fecha programada: ${DateFormat('dd/MM/yyyy').format(order.deliveryDate!)}'),
                     if (order.buyerNotes.isNotEmpty)
                       Text('Notas: ${order.buyerNotes}'),
                     const SizedBox(height: 16),
-                    
+
                     // Status Timeline Indicator
                     _buildStatusTimeline(order.status),
                     const SizedBox(height: 20),
@@ -239,8 +261,13 @@ class _BuyerOrdersScreenState extends State<BuyerOrdersScreen> with SingleTicker
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(label, style: TextStyle(fontWeight: isBold ? FontWeight.bold : FontWeight.normal)),
-        Text(val, style: TextStyle(fontWeight: isBold ? FontWeight.bold : FontWeight.normal, color: isBold ? AppColors.primaryDark : null)),
+        Text(label,
+            style: TextStyle(
+                fontWeight: isBold ? FontWeight.bold : FontWeight.normal)),
+        Text(val,
+            style: TextStyle(
+                fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+                color: isBold ? AppColors.primaryDark : null)),
       ],
     );
   }
@@ -265,11 +292,13 @@ class _BuyerOrdersScreenState extends State<BuyerOrdersScreen> with SingleTicker
                 children: [
                   CircleAvatar(
                     radius: 12,
-                    backgroundColor: color.withOpacity(0.15),
+                    backgroundColor: color.withValues(alpha: 0.15),
                     child: Icon(
                       index < currentIndex
                           ? Icons.check
-                          : (index == currentIndex ? Icons.radio_button_checked : Icons.radio_button_off),
+                          : (index == currentIndex
+                              ? Icons.radio_button_checked
+                              : Icons.radio_button_off),
                       size: 14,
                       color: color,
                     ),
@@ -279,7 +308,8 @@ class _BuyerOrdersScreenState extends State<BuyerOrdersScreen> with SingleTicker
                     labels[index],
                     style: TextStyle(
                       fontSize: 10,
-                      fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+                      fontWeight:
+                          isActive ? FontWeight.bold : FontWeight.normal,
                       color: color,
                     ),
                   ),
@@ -289,7 +319,9 @@ class _BuyerOrdersScreenState extends State<BuyerOrdersScreen> with SingleTicker
                 Expanded(
                   child: Container(
                     height: 2,
-                    color: index < currentIndex ? AppColors.primaryDark : Colors.grey[300],
+                    color: index < currentIndex
+                        ? AppColors.primaryDark
+                        : Colors.grey[300],
                   ),
                 ),
             ],

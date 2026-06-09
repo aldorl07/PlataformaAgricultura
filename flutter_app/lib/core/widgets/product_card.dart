@@ -51,21 +51,21 @@ class _ProductCardState extends State<ProductCard> {
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeOut,
         transform: _isHovered
-            ? (Matrix4.identity()..translate(0, -4, 0))
+            ? Matrix4.translationValues(0, -4, 0)
             : Matrix4.identity(),
         decoration: BoxDecoration(
           color: isDark ? const Color(0xFF2A2A2A) : Colors.white,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(_isHovered ? 0.12 : 0.05),
+              color: Colors.black.withValues(alpha: _isHovered ? 0.12 : 0.05),
               blurRadius: _isHovered ? 12 : 6,
               offset: const Offset(0, 4),
             ),
           ],
           border: Border.all(
             color: _isHovered
-                ? theme.colorScheme.primary.withOpacity(0.5)
+                ? theme.colorScheme.primary.withValues(alpha: 0.5)
                 : Colors.transparent,
             width: 1.5,
           ),
@@ -102,7 +102,7 @@ class _ProductCardState extends State<ProductCard> {
                                 child: Icon(
                                   Icons.eco_outlined,
                                   size: 48,
-                                  color: AppColors.primaryLight.withOpacity(0.4),
+                                  color: AppColors.primaryLight.withValues(alpha: 0.4),
                                 ),
                               ),
                             )
@@ -111,7 +111,7 @@ class _ProductCardState extends State<ProductCard> {
                               child: Icon(
                                 Icons.eco_outlined,
                                 size: 48,
-                                color: AppColors.primaryLight.withOpacity(0.4),
+                                color: AppColors.primaryLight.withValues(alpha: 0.4),
                               ),
                             ),
                     ),
@@ -182,7 +182,7 @@ class _ProductCardState extends State<ProductCard> {
                       Text(
                         '${widget.farmerName} · ${widget.farmerCommunity}',
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: isDark ? Colors.white60 : AppColors.neutralDark.withOpacity(0.6),
+                          color: isDark ? Colors.white60 : AppColors.neutralDark.withValues(alpha: 0.6),
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,

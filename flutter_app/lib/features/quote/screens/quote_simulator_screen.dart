@@ -39,7 +39,8 @@ class _QuoteSimulatorScreenState extends State<QuoteSimulatorScreen> {
   void _selectDate(BuildContext context, CartProvider cart) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: cart.deliveryDate ?? DateTime.now().add(const Duration(days: 2)),
+      initialDate:
+          cart.deliveryDate ?? DateTime.now().add(const Duration(days: 2)),
       firstDate: DateTime.now().add(const Duration(days: 1)),
       lastDate: DateTime.now().add(const Duration(days: 30)),
     );
@@ -50,17 +51,19 @@ class _QuoteSimulatorScreenState extends State<QuoteSimulatorScreen> {
 
   void _submitOrder(CartProvider cart, AuthProvider auth) async {
     if (cart.items.isEmpty) return;
-    
+
     if (_addressController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Ingrese una dirección de entrega válida')),
+        const SnackBar(
+            content: Text('Ingrese una dirección de entrega válida')),
       );
       return;
     }
 
     if (cart.deliveryDate == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Seleccione una fecha de entrega deseada')),
+        const SnackBar(
+            content: Text('Seleccione una fecha de entrega deseada')),
       );
       return;
     }
@@ -68,7 +71,8 @@ class _QuoteSimulatorScreenState extends State<QuoteSimulatorScreen> {
     cart.setDeliveryAddress(_addressController.text);
     cart.setBuyerNotes(_notesController.text);
 
-    final success = await cart.checkout(auth.currentUser?.id ?? 'buyer_anonymous');
+    final success =
+        await cart.checkout(auth.currentUser?.id ?? 'buyer_anonymous');
 
     if (success && mounted) {
       showDialog(
@@ -76,12 +80,15 @@ class _QuoteSimulatorScreenState extends State<QuoteSimulatorScreen> {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             title: const Row(
               children: [
-                Icon(Icons.check_circle, color: AppColors.primaryLight, size: 28),
+                Icon(Icons.check_circle,
+                    color: AppColors.primaryLight, size: 28),
                 SizedBox(width: 8),
-                Text('Intención Formalizada', style: TextStyle(fontWeight: FontWeight.bold)),
+                Text('Intención Formalizada',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
               ],
             ),
             content: const Text(
@@ -102,7 +109,8 @@ class _QuoteSimulatorScreenState extends State<QuoteSimulatorScreen> {
     } else if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(cart.errorMessage ?? 'Ocurrió un conflicto al realizar el pedido (stock insuficiente)'),
+          content: Text(cart.errorMessage ??
+              'Ocurrió un conflicto al realizar el pedido (stock insuficiente)'),
           backgroundColor: AppColors.error,
         ),
       );
@@ -135,7 +143,8 @@ class _QuoteSimulatorScreenState extends State<QuoteSimulatorScreen> {
                     // Step progress or title
                     Text(
                       'Simulador de Costos Chupaca Directo',
-                      style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+                      style: theme.textTheme.headlineSmall
+                          ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 20),
 
@@ -148,24 +157,30 @@ class _QuoteSimulatorScreenState extends State<QuoteSimulatorScreen> {
                         final item = cart.items.values.elementAt(index);
                         return Card(
                           margin: const EdgeInsets.only(bottom: 12),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12)),
                           child: Padding(
                             padding: const EdgeInsets.all(12.0),
                             child: Row(
                               children: [
                                 CircleAvatar(
                                   radius: 20,
-                                  backgroundColor: AppColors.primaryDark.withOpacity(0.1),
-                                  child: const Icon(Icons.eco_outlined, color: AppColors.primaryDark),
+                                  backgroundColor:
+                                      AppColors.primaryDark.withValues(alpha: 0.1),
+                                  child: const Icon(Icons.eco_outlined,
+                                      color: AppColors.primaryDark),
                                 ),
                                 const SizedBox(width: 12),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         item.product.name,
-                                        style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                                        style: theme.textTheme.titleMedium
+                                            ?.copyWith(
+                                                fontWeight: FontWeight.bold),
                                       ),
                                       Text(
                                         'Productor: ${item.farmerName}',
@@ -174,7 +189,8 @@ class _QuoteSimulatorScreenState extends State<QuoteSimulatorScreen> {
                                       const SizedBox(height: 4),
                                       Text(
                                         'S/. ${item.product.pricePerUnit.toStringAsFixed(2)} / ${item.product.unit}',
-                                        style: const TextStyle(fontWeight: FontWeight.w600),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w600),
                                       ),
                                     ],
                                   ),
@@ -185,16 +201,26 @@ class _QuoteSimulatorScreenState extends State<QuoteSimulatorScreen> {
                                     Row(
                                       children: [
                                         IconButton(
-                                          icon: const Icon(Icons.remove_circle_outline, size: 20),
-                                          onPressed: () => cart.updateQuantity(item.product.id, item.quantity - 10),
+                                          icon: const Icon(
+                                              Icons.remove_circle_outline,
+                                              size: 20),
+                                          onPressed: () => cart.updateQuantity(
+                                              item.product.id,
+                                              item.quantity - 10),
                                         ),
                                         Text(
                                           '${item.quantity.toInt()}',
-                                          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                          style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold),
                                         ),
                                         IconButton(
-                                          icon: const Icon(Icons.add_circle_outline, size: 20),
-                                          onPressed: () => cart.updateQuantity(item.product.id, item.quantity + 10),
+                                          icon: const Icon(
+                                              Icons.add_circle_outline,
+                                              size: 20),
+                                          onPressed: () => cart.updateQuantity(
+                                              item.product.id,
+                                              item.quantity + 10),
                                         ),
                                       ],
                                     ),
@@ -208,8 +234,10 @@ class _QuoteSimulatorScreenState extends State<QuoteSimulatorScreen> {
                                   ],
                                 ),
                                 IconButton(
-                                  icon: const Icon(Icons.delete_outline, color: Colors.grey),
-                                  onPressed: () => cart.removeItem(item.product.id),
+                                  icon: const Icon(Icons.delete_outline,
+                                      color: Colors.grey),
+                                  onPressed: () =>
+                                      cart.removeItem(item.product.id),
                                 )
                               ],
                             ),
@@ -221,7 +249,8 @@ class _QuoteSimulatorScreenState extends State<QuoteSimulatorScreen> {
 
                     // Flete/Shipping Simulator fields
                     Card(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16)),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
@@ -229,7 +258,8 @@ class _QuoteSimulatorScreenState extends State<QuoteSimulatorScreen> {
                           children: [
                             Text(
                               'Simulador de Envío (Flete)',
-                              style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                              style: theme.textTheme.titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 16),
                             AppTextField(
@@ -242,15 +272,26 @@ class _QuoteSimulatorScreenState extends State<QuoteSimulatorScreen> {
                             const SizedBox(height: 20),
                             Text(
                               'Método de Transporte',
-                              style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+                              style: theme.textTheme.bodyMedium
+                                  ?.copyWith(fontWeight: FontWeight.w600),
                             ),
                             DropdownButtonFormField<String>(
                               initialValue: cart.transportMethod,
-                              decoration: const InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 16)),
+                              decoration: const InputDecoration(
+                                  contentPadding:
+                                      EdgeInsets.symmetric(horizontal: 16)),
                               items: const [
-                                DropdownMenuItem(value: 'shared_freight', child: Text('Flete compartido (S/. 80.00)')),
-                                DropdownMenuItem(value: 'own_truck', child: Text('Camión propio (S/. 0.00)')),
-                                DropdownMenuItem(value: 'pickup', child: Text('Recojo en parcela (S/. 0.00)')),
+                                DropdownMenuItem(
+                                    value: 'shared_freight',
+                                    child:
+                                        Text('Flete compartido (S/. 80.00)')),
+                                DropdownMenuItem(
+                                    value: 'own_truck',
+                                    child: Text('Camión propio (S/. 0.00)')),
+                                DropdownMenuItem(
+                                    value: 'pickup',
+                                    child:
+                                        Text('Recojo en parcela (S/. 0.00)')),
                               ],
                               onChanged: (val) {
                                 if (val != null) cart.setTransportMethod(val);
@@ -266,16 +307,20 @@ class _QuoteSimulatorScreenState extends State<QuoteSimulatorScreen> {
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: isDark ? const Color(0xFF1B3B20) : const Color(0xFFE8F5E9),
+                        color: isDark
+                            ? const Color(0xFF1B3B20)
+                            : const Color(0xFFE8F5E9),
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: AppColors.primaryLight.withOpacity(0.3)),
+                        border: Border.all(
+                            color: AppColors.primaryLight.withValues(alpha: 0.3)),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             children: [
-                              const Icon(Icons.savings_outlined, color: AppColors.primaryDark),
+                              const Icon(Icons.savings_outlined,
+                                  color: AppColors.primaryDark),
                               const SizedBox(width: 8),
                               Text(
                                 'Ahorro vs Intermediarios',
@@ -289,7 +334,9 @@ class _QuoteSimulatorScreenState extends State<QuoteSimulatorScreen> {
                           const SizedBox(height: 12),
                           Text(
                             'Al comprar directo a los productores de Chupaca estás ahorrando:',
-                            style: theme.textTheme.bodyMedium?.copyWith(color: isDark ? Colors.white70 : Colors.black87),
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                                color:
+                                    isDark ? Colors.white70 : Colors.black87),
                           ),
                           const SizedBox(height: 8),
                           Text(
@@ -300,14 +347,19 @@ class _QuoteSimulatorScreenState extends State<QuoteSimulatorScreen> {
                             ),
                           ),
                           const SizedBox(height: 16),
-                          
+
                           // Custom Bar Chart comparing Traditional vs Platform costs
-                          const Text('Comparativa de Costo Total (S/.)', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
+                          const Text('Comparativa de Costo Total (S/.)',
+                              style: TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.w600)),
                           const SizedBox(height: 8),
                           // Traditional Bar
                           Row(
                             children: [
-                              const SizedBox(width: 80, child: Text('Tradicional:', style: TextStyle(fontSize: 11))),
+                              const SizedBox(
+                                  width: 80,
+                                  child: Text('Tradicional:',
+                                      style: TextStyle(fontSize: 11))),
                               Expanded(
                                 child: Container(
                                   height: 20,
@@ -319,7 +371,10 @@ class _QuoteSimulatorScreenState extends State<QuoteSimulatorScreen> {
                                   padding: const EdgeInsets.only(left: 8),
                                   child: Text(
                                     'S/. ${traditionalCost.toStringAsFixed(0)}',
-                                    style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ),
@@ -329,9 +384,13 @@ class _QuoteSimulatorScreenState extends State<QuoteSimulatorScreen> {
                           // Platform Bar
                           Row(
                             children: [
-                              const SizedBox(width: 80, child: Text('Chupaca D.:', style: TextStyle(fontSize: 11))),
+                              const SizedBox(
+                                  width: 80,
+                                  child: Text('Chupaca D.:',
+                                      style: TextStyle(fontSize: 11))),
                               Expanded(
-                                flex: (cart.totalAmount / traditionalCost * 100).toInt(),
+                                flex: (cart.totalAmount / traditionalCost * 100)
+                                    .toInt(),
                                 child: Container(
                                   height: 20,
                                   decoration: BoxDecoration(
@@ -342,12 +401,19 @@ class _QuoteSimulatorScreenState extends State<QuoteSimulatorScreen> {
                                   padding: const EdgeInsets.only(left: 8),
                                   child: Text(
                                     'S/. ${cart.totalAmount.toStringAsFixed(0)}',
-                                    style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ),
                               Expanded(
-                                flex: (100 - (cart.totalAmount / traditionalCost * 100)).toInt(),
+                                flex: (100 -
+                                        (cart.totalAmount /
+                                            traditionalCost *
+                                            100))
+                                    .toInt(),
                                 child: const SizedBox(),
                               )
                             ],
@@ -359,7 +425,8 @@ class _QuoteSimulatorScreenState extends State<QuoteSimulatorScreen> {
 
                     // Cost Breakdown & Summary Card
                     Card(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16)),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
@@ -367,14 +434,18 @@ class _QuoteSimulatorScreenState extends State<QuoteSimulatorScreen> {
                           children: [
                             Text(
                               'Resumen de Costos',
-                              style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                              style: theme.textTheme.titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 16),
-                            _buildSummaryRow('Subtotal de Productos', CurrencyFormatter.format(cart.subtotal)),
+                            _buildSummaryRow('Subtotal de Productos',
+                                CurrencyFormatter.format(cart.subtotal)),
                             const SizedBox(height: 8),
-                            _buildSummaryRow('Flete Estimado', CurrencyFormatter.format(cart.shippingCost)),
+                            _buildSummaryRow('Flete Estimado',
+                                CurrencyFormatter.format(cart.shippingCost)),
                             const SizedBox(height: 8),
-                            _buildSummaryRow('Comisión de Plataforma (2%)', CurrencyFormatter.format(cart.platformFee)),
+                            _buildSummaryRow('Comisión de Plataforma (2%)',
+                                CurrencyFormatter.format(cart.platformFee)),
                             const Divider(height: 24),
                             _buildSummaryRow(
                               'TOTAL ESTIMADO',
@@ -382,28 +453,33 @@ class _QuoteSimulatorScreenState extends State<QuoteSimulatorScreen> {
                               isTotal: true,
                             ),
                             const SizedBox(height: 24),
-                            
+
                             // Delivery Date Picker
                             InkWell(
                               onTap: () => _selectDate(context, cart),
                               child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 12),
                                 decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey.withOpacity(0.5)),
+                                  border: Border.all(
+                                      color: Colors.grey.withValues(alpha: 0.5)),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
                                       children: [
-                                        const Icon(Icons.calendar_month, color: AppColors.primaryDark),
+                                        const Icon(Icons.calendar_month,
+                                            color: AppColors.primaryDark),
                                         const SizedBox(width: 8),
                                         Text(
                                           cart.deliveryDate != null
                                               ? 'Entrega: ${DateFormat('dd/MM/yyyy').format(cart.deliveryDate!)}'
                                               : 'Seleccionar fecha de entrega',
-                                          style: const TextStyle(fontWeight: FontWeight.w600),
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w600),
                                         ),
                                       ],
                                     ),
@@ -417,7 +493,8 @@ class _QuoteSimulatorScreenState extends State<QuoteSimulatorScreen> {
                             // Notes
                             AppTextField(
                               label: 'Notas de entrega (Opcional)',
-                              placeholder: 'Especificaciones sobre empaque o entrega',
+                              placeholder:
+                                  'Especificaciones sobre empaque o entrega',
                               controller: _notesController,
                               maxLines: 2,
                               onChanged: (val) => cart.setBuyerNotes(val),
@@ -447,9 +524,12 @@ class _QuoteSimulatorScreenState extends State<QuoteSimulatorScreen> {
         children: [
           Icon(Icons.calculate_outlined, size: 64, color: Colors.grey[400]),
           const SizedBox(height: 16),
-          const Text('No hay productos en tu cotización', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          const Text('No hay productos en tu cotización',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
-          const Text('Agrega cultivos desde el catálogo para simular tus costos', style: TextStyle(color: Colors.grey)),
+          const Text(
+              'Agrega cultivos desde el catálogo para simular tus costos',
+              style: TextStyle(color: Colors.grey)),
           const SizedBox(height: 24),
           ElevatedButton(
             onPressed: () => context.go('/catalog'),

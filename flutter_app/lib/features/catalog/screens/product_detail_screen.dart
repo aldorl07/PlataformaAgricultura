@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../providers/catalog_provider.dart';
 import '../../quote/providers/cart_provider.dart';
-import '../../auth/providers/auth_provider.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final String productId;
@@ -62,7 +60,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
     final catalog = Provider.of<CatalogProvider>(context);
     final cart = Provider.of<CartProvider>(context);
-    final auth = Provider.of<AuthProvider>(context);
 
     final product = catalog.products.firstWhere(
       (p) => p.id == widget.productId,
@@ -95,12 +92,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       fit: BoxFit.cover,
                       errorWidget: (context, url, error) => Container(
                         color: isDark ? const Color(0xFF333333) : Colors.grey[200],
-                        child: Icon(Icons.eco_outlined, size: 64, color: AppColors.primaryLight.withOpacity(0.5)),
+                        child: Icon(Icons.eco_outlined, size: 64, color: AppColors.primaryLight.withValues(alpha: 0.5)),
                       ),
                     )
                   : Container(
                       color: isDark ? const Color(0xFF333333) : Colors.grey[200],
-                      child: Icon(Icons.eco_outlined, size: 64, color: AppColors.primaryLight.withOpacity(0.5)),
+                      child: Icon(Icons.eco_outlined, size: 64, color: AppColors.primaryLight.withValues(alpha: 0.5)),
                     ),
             ),
             
@@ -115,7 +112,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
-                          color: AppColors.primaryDark.withOpacity(0.1),
+                          color: AppColors.primaryDark.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
@@ -131,7 +128,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
-                          color: AppColors.secondary.withOpacity(0.1),
+                          color: AppColors.secondary.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
@@ -198,14 +195,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     decoration: BoxDecoration(
                       color: isDark ? const Color(0xFF2C2C2C) : Colors.grey[100],
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: Colors.grey.withOpacity(0.2)),
+                      border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
                     ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CircleAvatar(
                           radius: 24,
-                          backgroundColor: AppColors.primaryDark.withOpacity(0.1),
+                          backgroundColor: AppColors.primaryDark.withValues(alpha: 0.1),
                           child: const Icon(Icons.person, color: AppColors.primaryDark),
                         ),
                         const SizedBox(width: 16),
@@ -257,7 +254,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey.withOpacity(0.5)),
+                          border: Border.all(color: Colors.grey.withValues(alpha: 0.5)),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Row(
@@ -304,23 +301,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     onPressed: product.stock > 0
                         ? () {
                             cart.addToCart(product, farmerName, quantity: _quantity);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('${product.name} agregado a cotización'),
-                                action: SnackBarAction(
-                                  label: 'Ver',
-                                  textColor: Colors.white,
-                                  onPressed: () {
-                                    if (auth.isAuthenticated) {
-                                      context.push('/buyer/simulator');
-                                    } else {
-                                      context.push('/login');
-                                    }
-                                  },
-                                ),
-                              ),
-                            );
-                            Navigator.of(context).pop();
+                            Navigator.of(context).pop(true);
                           }
                         : null,
                     style: ElevatedButton.styleFrom(

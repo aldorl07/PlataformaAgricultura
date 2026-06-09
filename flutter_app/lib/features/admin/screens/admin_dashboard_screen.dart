@@ -154,7 +154,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       decoration: BoxDecoration(
         color: const Color(0xFF1E2A1F),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.primaryLight.withOpacity(0.3)),
+        border: Border.all(color: AppColors.primaryLight.withValues(alpha: 0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -440,7 +440,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                 const Text('Panel de Verificación de Productores (RF-03)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(color: AppColors.primaryDark.withOpacity(0.2), borderRadius: BorderRadius.circular(10)),
+                  decoration: BoxDecoration(color: AppColors.primaryDark.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(10)),
                   child: Text('${_farmers.length} productores registrados', style: const TextStyle(color: AppColors.primaryLight, fontSize: 12)),
                 ),
               ],
@@ -586,7 +586,7 @@ class DistrictMapPainter extends CustomPainter {
         if (count > 2) {
           paint.color = AppColors.primaryDark;
         } else if (count > 0) {
-          paint.color = AppColors.primaryLight.withOpacity(0.6);
+          paint.color = AppColors.primaryLight.withValues(alpha: 0.6);
         } else {
           paint.color = const Color(0xFF2C2C2C);
         }

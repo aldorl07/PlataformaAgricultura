@@ -15,11 +15,31 @@ class LandingScreen extends StatelessWidget {
 
     // Simulated market ticker items
     final tickerItems = [
-      const MarketTickerItem(cropName: 'Papa Yungay', wholesalePrice: 1.80, platformPrice: 1.35, savingPercent: 25),
-      const MarketTickerItem(cropName: 'Maíz Choclo', wholesalePrice: 2.50, platformPrice: 1.90, savingPercent: 24),
-      const MarketTickerItem(cropName: 'Cebada Grano', wholesalePrice: 2.00, platformPrice: 1.50, savingPercent: 25),
-      const MarketTickerItem(cropName: 'Habas Verdes', wholesalePrice: 3.20, platformPrice: 2.40, savingPercent: 25),
-      const MarketTickerItem(cropName: 'Zanahoria Dulce', wholesalePrice: 1.60, platformPrice: 1.20, savingPercent: 25),
+      const MarketTickerItem(
+          cropName: 'Papa Yungay',
+          wholesalePrice: 1.80,
+          platformPrice: 1.35,
+          savingPercent: 25),
+      const MarketTickerItem(
+          cropName: 'Maíz Choclo',
+          wholesalePrice: 2.50,
+          platformPrice: 1.90,
+          savingPercent: 24),
+      const MarketTickerItem(
+          cropName: 'Cebada Grano',
+          wholesalePrice: 2.00,
+          platformPrice: 1.50,
+          savingPercent: 25),
+      const MarketTickerItem(
+          cropName: 'Habas Verdes',
+          wholesalePrice: 3.20,
+          platformPrice: 2.40,
+          savingPercent: 25),
+      const MarketTickerItem(
+          cropName: 'Zanahoria Dulce',
+          wholesalePrice: 1.60,
+          platformPrice: 1.20,
+          savingPercent: 25),
     ];
 
     return Scaffold(
@@ -30,28 +50,28 @@ class LandingScreen extends StatelessWidget {
             children: [
               // 1. Scrolling Market Price Ticker
               MarketTicker(items: tickerItems),
-              
+
               // 2. Hero Section
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 60),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 60),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [AppColors.primaryDark, Color(0xFF0F3D12)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(32),
-                    bottomRight: Radius.circular(32),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.15),
-                      blurRadius: 10,
-                      offset: const Offset(0, 5),
-                    )
-                  ]
-                ),
+                    gradient: const LinearGradient(
+                      colors: [AppColors.primaryDark, Color(0xFF0F3D12)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(32),
+                      bottomRight: Radius.circular(32),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.15),
+                        blurRadius: 10,
+                        offset: const Offset(0, 5),
+                      )
+                    ]),
                 child: Column(
                   children: [
                     const Icon(
@@ -74,37 +94,21 @@ class LandingScreen extends StatelessWidget {
                       'Plataforma digital agrícola de Chupaca. Conectamos directamente a agricultores locales con mercados mayoristas y restaurantes.',
                       textAlign: TextAlign.center,
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: Colors.white.withOpacity(0.85),
+                        color: Colors.white.withValues(alpha: 0.85),
                       ),
                     ).animate().fadeIn(delay: 400.ms),
                     const SizedBox(height: 32),
                     LayoutBuilder(
                       builder: (context, constraints) {
                         final isWide = constraints.maxWidth > 500;
-                        return Flex(
-                          direction: isWide ? Axis.horizontal : Axis.vertical,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: isWide ? 200 : double.infinity,
-                              child: AppButton(
-                                text: 'Soy Productor',
-                                icon: Icons.agriculture_outlined,
-                                backgroundColor: AppColors.primaryLight,
-                                onPressed: () => context.push('/register?role=farmer'),
-                              ),
-                            ),
-                            SizedBox(width: isWide ? 16 : 0, height: isWide ? 0 : 12),
-                            SizedBox(
-                              width: isWide ? 200 : double.infinity,
-                              child: AppButton(
-                                text: 'Soy Comprador',
-                                icon: Icons.shopping_basket_outlined,
-                                backgroundColor: AppColors.secondary,
-                                onPressed: () => context.push('/register?role=buyer'),
-                              ),
-                            ),
-                          ],
+                        return SizedBox(
+                          width: isWide ? 250 : double.infinity,
+                          child: AppButton(
+                            text: 'Crear Cuenta',
+                            icon: Icons.person_add_outlined,
+                            backgroundColor: AppColors.primaryLight,
+                            onPressed: () => context.push('/register'),
+                          ),
                         );
                       },
                     ).animate().fadeIn(delay: 600.ms),
@@ -209,7 +213,7 @@ class LandingScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              
+
               const SizedBox(height: 60),
 
               // Footer
@@ -237,7 +241,8 @@ class LandingScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildImpactCard(BuildContext context, String value, String subtitle, IconData icon) {
+  Widget _buildImpactCard(
+      BuildContext context, String value, String subtitle, IconData icon) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
     return Expanded(
@@ -270,7 +275,8 @@ class LandingScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildStepRow(BuildContext context, String step, String title, String desc, IconData icon) {
+  Widget _buildStepRow(BuildContext context, String step, String title,
+      String desc, IconData icon) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
     return Row(

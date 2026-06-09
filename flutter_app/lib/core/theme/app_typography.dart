@@ -40,7 +40,7 @@ class AppTypography {
   static TextStyle get caption => GoogleFonts.inter(
         fontSize: 12,
         fontWeight: FontWeight.normal,
-        color: AppColors.neutralDark.withOpacity(0.6),
+        color: AppColors.neutralDark.withValues(alpha: 0.6),
       );
 
   static TextStyle get buttonText => GoogleFonts.inter(

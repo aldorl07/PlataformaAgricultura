@@ -79,7 +79,7 @@ class _MarketTickerState extends State<MarketTicker> {
         color: isDark ? const Color(0xFF1E281F) : const Color(0xFFE8F5E9),
         border: Border(
           bottom: BorderSide(
-            color: isDark ? Colors.white10 : AppColors.primaryDark.withOpacity(0.1),
+            color: isDark ? Colors.white10 : AppColors.primaryDark.withValues(alpha: 0.1),
             width: 1,
           ),
         ),

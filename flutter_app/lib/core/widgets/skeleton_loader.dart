@@ -16,10 +16,11 @@ class SkeletonLoader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Shimmer.fromColors(
       baseColor: isDark ? const Color(0xFF3A3A3A) : const Color(0xFFE0E0E0),
-      highlightColor: isDark ? const Color(0xFF4A4A4A) : const Color(0xFFF5F5F5),
+      highlightColor:
+          isDark ? const Color(0xFF4A4A4A) : const Color(0xFFF5F5F5),
       child: Container(
         width: width,
         height: height,
@@ -63,7 +64,10 @@ class SkeletonLoader extends StatelessWidget {
                 SizedBox(height: 8),
                 SkeletonLoader(width: 120, height: 14),
                 SizedBox(height: 12),
-                SkeletonLoader(width: double.infinity, height: 36, borderRadius: BorderRadius.all(Radius.circular(8))),
+                SkeletonLoader(
+                    width: double.infinity,
+                    height: 36,
+                    borderRadius: BorderRadius.all(Radius.circular(8))),
               ],
             ),
           ),
@@ -78,7 +82,10 @@ class SkeletonLoader extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Row(
         children: [
-          SkeletonLoader(width: 60, height: 60, borderRadius: BorderRadius.all(Radius.circular(8))),
+          SkeletonLoader(
+              width: 60,
+              height: 60,
+              borderRadius: BorderRadius.all(Radius.circular(8))),
           SizedBox(width: 16),
           Expanded(
             child: Column(
@@ -108,7 +115,10 @@ class SkeletonLoader extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SkeletonLoader(width: 100, height: 14),
-                SkeletonLoader(width: 24, height: 24, borderRadius: BorderRadius.all(Radius.circular(4))),
+                SkeletonLoader(
+                    width: 24,
+                    height: 24,
+                    borderRadius: BorderRadius.all(Radius.circular(4))),
               ],
             ),
             SizedBox(height: 12),

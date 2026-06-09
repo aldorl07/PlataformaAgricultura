@@ -15,23 +15,28 @@ class FarmerProvider extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
 
   // Stock alerts filters: items where stock is low (< 30 kg/units)
-  List<ProductModel> get stockAlerts => _myProducts.where((p) => p.stock < 30 && p.isActive).toList();
+  List<ProductModel> get stockAlerts =>
+      _myProducts.where((p) => p.stock < 30 && p.isActive).toList();
 
   // Metrics for Farmer Dashboard (Y1, Y3)
   double get monthlyRevenue {
     final now = DateTime.now();
     return _myOrders
-        .where((o) => o.status == 'completed' && o.createdAt.month == now.month && o.createdAt.year == now.year)
+        .where((o) =>
+            o.status == 'completed' &&
+            o.createdAt.month == now.month &&
+            o.createdAt.year == now.year)
         .fold(0.0, (sum, o) {
-          // only add lines that belong to this farmer
-          final farmerTotal = o.items
-              .where((item) => _myProducts.any((p) => p.id == item.productId))
-              .fold(0.0, (s, item) => s + item.lineTotal);
-          return sum + farmerTotal;
-        });
+      // only add lines that belong to this farmer
+      final farmerTotal = o.items
+          .where((item) => _myProducts.any((p) => p.id == item.productId))
+          .fold(0.0, (s, item) => s + item.lineTotal);
+      return sum + farmerTotal;
+    });
   }
 
-  int get pendingOrdersCount => _myOrders.where((o) => o.status == 'pending').length;
+  int get pendingOrdersCount =>
+      _myOrders.where((o) => o.status == 'pending').length;
 
   double get averageNetMargin {
     // Platform fee is 2% of transaction. So net margin of farmer is ~98% of product cost vs baseline.
@@ -39,7 +44,7 @@ class FarmerProvider extends ChangeNotifier {
     // Let's assume standard cost of production is 60%, so net profit margin is (Revenue*0.98 - Cost) / Revenue.
     // In our mock/dashboard we represent this net profit margin as ~38%.
     if (_myOrders.isEmpty) return 0.0;
-    return 38.0; 
+    return 38.0;
   }
 
   Future<void> loadFarmerData(String farmerId) async {
@@ -71,14 +76,14 @@ class FarmerProvider extends ChangeNotifier {
     try {
       await ServiceLocator.firestoreService.createProduct(product);
       _myProducts.add(product);
-      
+
       // Log telemetry event
       ServiceLocator.telemetryService.logEvent(
         eventType: 'first_product_publish',
         userId: product.farmerId,
         metadata: {'productId': product.id, 'cropType': product.cropType},
       );
-      
+
       notifyListeners();
       return true;
     } catch (e) {
@@ -112,7 +117,8 @@ class FarmerProvider extends ChangeNotifier {
 
   Future<bool> quickUpdateStock(String productId, double newStock) async {
     try {
-      await ServiceLocator.firestoreService.updateProductStock(productId, newStock);
+      await ServiceLocator.firestoreService
+          .updateProductStock(productId, newStock);
       final index = _myProducts.indexWhere((p) => p.id == productId);
       if (index != -1) {
         _myProducts[index] = _myProducts[index].copyWith(stock: newStock);
@@ -137,11 +143,13 @@ class FarmerProvider extends ChangeNotifier {
     }
   }
 
-  Future<bool> updateStatus(String orderId, String newStatus, String farmerId) async {
+  Future<bool> updateStatus(
+      String orderId, String newStatus, String farmerId) async {
     _isLoading = true;
     notifyListeners();
     try {
-      await ServiceLocator.firestoreService.updateOrderStatus(orderId, newStatus, farmerId);
+      await ServiceLocator.firestoreService
+          .updateOrderStatus(orderId, newStatus, farmerId);
       // Reload order list
       _myOrders = await ServiceLocator.firestoreService.getOrders(
         userId: farmerId,

@@ -217,7 +217,6 @@ class MockDb {
       orders.add(order);
 
       // Create SalesLogs for completed orders
-      final sub = order.subtotal;
       final log = SalesLogModel(
         id: 'log_seed_$i',
         orderId: order.id,

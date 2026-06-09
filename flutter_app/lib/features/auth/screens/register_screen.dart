@@ -10,19 +10,20 @@ import '../providers/auth_provider.dart';
 import '../models/user_model.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+  final String? initialRole;
+  const RegisterScreen({super.key, this.initialRole});
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final PageController _pageController = PageController();
-  int _currentStep = 0;
-  
+  late final PageController _pageController;
+  late int _currentStep;
+
   // Page 1: Role Selection
-  String _selectedRole = 'farmer'; // 'farmer' or 'buyer'
-  
+  late String _selectedRole; // 'farmer' or 'buyer'
+
   // Page 2: Credentials Form
   final _formKey2 = GlobalKey<FormState>();
   final _nameController = TextEditingController();
@@ -30,7 +31,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  
+
   // Page 3A: Farmer Details
   final _formKey3A = GlobalKey<FormState>();
   final _dniController = TextEditingController();
@@ -39,7 +40,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final List<String> _selectedCrops = [];
   String _preferredContact = 'whatsapp';
   bool _acceptTerms = false;
-  
+
   // Page 3B: Buyer Details
   final _formKey3B = GlobalKey<FormState>();
   final _businessNameController = TextEditingController();
@@ -50,16 +51,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   void initState() {
     super.initState();
-    // Pre-select role if passed in route
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final uri = Uri.parse(GoRouterState.of(context).uri.toString());
-      final roleParam = uri.queryParameters['role'];
-      if (roleParam == 'farmer' || roleParam == 'buyer') {
-        setState(() {
-          _selectedRole = roleParam!;
-        });
-      }
-    });
+    if (widget.initialRole == 'farmer' || widget.initialRole == 'buyer') {
+      _selectedRole = widget.initialRole!;
+      _currentStep = 1;
+    } else {
+      _selectedRole = 'farmer';
+      _currentStep = 0;
+    }
+    _pageController = PageController(initialPage: _currentStep);
   }
 
   @override
@@ -80,16 +79,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   void _nextPage() {
     if (_currentStep == 0) {
-      _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+      _pageController.nextPage(
+          duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
     } else if (_currentStep == 1) {
       if (_formKey2.currentState!.validate()) {
-        _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+        _pageController.nextPage(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut);
       }
     }
   }
 
   void _previousPage() {
-    _pageController.previousPage(duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+    _pageController.previousPage(
+        duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
   }
 
   void _submitRegistration() async {
@@ -98,7 +101,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       if (!_formKey3A.currentState!.validate()) return;
       if (!_acceptTerms) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Debe aceptar los términos de investigación')),
+          const SnackBar(
+              content: Text('Debe aceptar los términos de investigación')),
         );
         return;
       }
@@ -107,7 +111,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
 
     final auth = Provider.of<AuthProvider>(context, listen: false);
-    
+
     final farmerProfile = _selectedRole == 'farmer'
         ? FarmerProfile(
             dni: _dniController.text.trim(),
@@ -135,7 +139,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       role: _selectedRole,
       fullName: _nameController.text,
       phone: _phoneController.text,
-      preferredContact: _selectedRole == 'farmer' ? _preferredContact : 'whatsapp',
+      preferredContact:
+          _selectedRole == 'farmer' ? _preferredContact : 'whatsapp',
       farmerProfile: farmerProfile,
       buyerProfile: buyerProfile,
     );
@@ -158,14 +163,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           title: Row(
             children: [
-              const Icon(Icons.check_circle, color: AppColors.primaryLight, size: 28),
+              const Icon(Icons.check_circle,
+                  color: AppColors.primaryLight, size: 28),
               const SizedBox(width: 8),
               Text(
                 '¡Registro Exitoso!',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -206,32 +216,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
           children: [
             // Progress indicators
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
               child: Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Paso ${_currentStep + 1} de 3', style: theme.textTheme.titleSmall),
+                      Text('Paso ${_currentStep + 1} de 3',
+                          style: theme.textTheme.titleSmall),
                       Text(
-                        _currentStep == 0 
-                            ? 'Selección de Rol' 
-                            : (_currentStep == 1 ? 'Credenciales de Acceso' : 'Datos del Perfil'),
-                        style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold, color: AppColors.primaryDark),
+                        _currentStep == 0
+                            ? 'Selección de Rol'
+                            : (_currentStep == 1
+                                ? 'Credenciales de Acceso'
+                                : 'Datos del Perfil'),
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primaryDark),
                       ),
                     ],
                   ),
                   const SizedBox(height: 8),
                   LinearProgressIndicator(
                     value: (_currentStep + 1) / 3,
-                    backgroundColor: theme.dividerColor.withOpacity(0.1),
-                    valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primaryDark),
+                    backgroundColor: theme.dividerColor.withValues(alpha: 0.1),
+                    valueColor: const AlwaysStoppedAnimation<Color>(
+                        AppColors.primaryDark),
                     borderRadius: BorderRadius.circular(4),
                   ),
                 ],
               ),
             ),
-            
+
             Expanded(
               child: PageView(
                 controller: _pageController,
@@ -244,7 +261,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 children: [
                   _buildStep1RoleSelection(),
                   _buildStep2Credentials(),
-                  _selectedRole == 'farmer' ? _buildStep3AFarmerDetails() : _buildStep3BBuyerDetails(),
+                  _selectedRole == 'farmer'
+                      ? _buildStep3AFarmerDetails()
+                      : _buildStep3BBuyerDetails(),
                 ],
               ),
             ),
@@ -265,13 +284,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     )
                   else
                     const Spacer(),
-                  
                   const SizedBox(width: 16),
-                  
                   Expanded(
                     child: AppButton(
                       text: _currentStep == 2 ? 'Registrarse' : 'Siguiente',
-                      onPressed: _currentStep == 2 ? _submitRegistration : _nextPage,
+                      onPressed:
+                          _currentStep == 2 ? _submitRegistration : _nextPage,
                       isLoading: Provider.of<AuthProvider>(context).isLoading,
                     ),
                   ),
@@ -294,7 +312,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
           Text(
             '¿Cómo deseas utilizar la plataforma?',
             textAlign: TextAlign.center,
-            style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+            style: theme.textTheme.titleLarge
+                ?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           Text(
@@ -303,19 +322,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
             style: theme.textTheme.bodyMedium?.copyWith(color: Colors.grey),
           ),
           const SizedBox(height: 32),
-          
+
           // Farmer Card
           GestureDetector(
             onTap: () => setState(() => _selectedRole = 'farmer'),
             child: Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: _selectedRole == 'farmer' 
-                    ? AppColors.primaryDark.withOpacity(0.08) 
+                color: _selectedRole == 'farmer'
+                    ? AppColors.primaryDark.withValues(alpha: 0.08)
                     : Colors.white,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: _selectedRole == 'farmer' ? AppColors.primaryDark : Colors.grey.withOpacity(0.2),
+                  color: _selectedRole == 'farmer'
+                      ? AppColors.primaryDark
+                      : Colors.grey.withValues(alpha: 0.2),
                   width: _selectedRole == 'farmer' ? 2 : 1,
                 ),
               ),
@@ -324,17 +345,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: AppColors.primaryDark.withOpacity(0.1),
+                      color: AppColors.primaryDark.withValues(alpha: 0.1),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.agriculture, color: AppColors.primaryDark, size: 32),
+                    child: const Icon(Icons.agriculture,
+                        color: AppColors.primaryDark, size: 32),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('🌾 Productor Agrícola', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                        Text('🌾 Productor Agrícola',
+                            style: theme.textTheme.titleMedium
+                                ?.copyWith(fontWeight: FontWeight.bold)),
                         const SizedBox(height: 4),
                         Text(
                           'Publica tu cosecha, maneja stock en tiempo real y vende directo sin intermediarios.',
@@ -347,21 +371,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ),
           ),
-          
+
           const SizedBox(height: 20),
-          
+
           // Buyer Card
           GestureDetector(
             onTap: () => setState(() => _selectedRole = 'buyer'),
             child: Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: _selectedRole == 'buyer' 
-                    ? AppColors.primaryDark.withOpacity(0.08) 
+                color: _selectedRole == 'buyer'
+                    ? AppColors.primaryDark.withValues(alpha: 0.08)
                     : Colors.white,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: _selectedRole == 'buyer' ? AppColors.primaryDark : Colors.grey.withOpacity(0.2),
+                  color: _selectedRole == 'buyer'
+                      ? AppColors.primaryDark
+                      : Colors.grey.withValues(alpha: 0.2),
                   width: _selectedRole == 'buyer' ? 2 : 1,
                 ),
               ),
@@ -370,17 +396,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: AppColors.secondary.withOpacity(0.1),
+                      color: AppColors.secondary.withValues(alpha: 0.1),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.shopping_basket, color: AppColors.secondary, size: 32),
+                    child: const Icon(Icons.shopping_basket,
+                        color: AppColors.secondary, size: 32),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('🛒 Comprador / Mayorista', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                        Text('🛒 Comprador / Mayorista',
+                            style: theme.textTheme.titleMedium
+                                ?.copyWith(fontWeight: FontWeight.bold)),
                         const SizedBox(height: 4),
                         Text(
                           'Busca cultivos frescos, cotiza con calculadora de flete y visualiza tu ahorro real.',
@@ -477,23 +506,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
               validator: Validators.validateDni,
             ),
             const SizedBox(height: 20),
-            
+
             // Community Select
             Text(
               'Comunidad / Distrito de Origen',
-              style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+              style: theme.textTheme.bodyMedium
+                  ?.copyWith(fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 6),
             DropdownButtonFormField<String>(
               initialValue: _selectedCommunity,
-              decoration: const InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 16)),
-              items: AppConstants.communities.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
+              decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16)),
+              items: AppConstants.communities
+                  .map((c) => DropdownMenuItem(value: c, child: Text(c)))
+                  .toList(),
               onChanged: (val) {
                 if (val != null) setState(() => _selectedCommunity = val);
               },
             ),
             const SizedBox(height: 20),
-            
+
             AppTextField(
               label: 'Años de Experiencia Agrícola',
               placeholder: 'Ej. 12',
@@ -501,18 +534,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
               keyboardType: TextInputType.number,
               prefixIcon: Icons.timeline,
               validator: (val) {
-                if (val == null || int.tryParse(val) == null || int.parse(val) < 0) {
+                if (val == null ||
+                    int.tryParse(val) == null ||
+                    int.parse(val) < 0) {
                   return 'Ingrese un número válido';
                 }
                 return null;
               },
             ),
             const SizedBox(height: 20),
-            
+
             // Crops Choice
             Text(
               'Principales Cultivos (Selecciona los aplicables)',
-              style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+              style: theme.textTheme.bodyMedium
+                  ?.copyWith(fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 8),
             Wrap(
@@ -524,10 +560,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 return ChoiceChip(
                   label: Text(displayName),
                   selected: isSelected,
-                  selectedColor: AppColors.primaryDark.withOpacity(0.2),
+                  selectedColor: AppColors.primaryDark.withValues(alpha: 0.2),
                   labelStyle: TextStyle(
                     color: isSelected ? AppColors.primaryDark : Colors.black87,
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                    fontWeight:
+                        isSelected ? FontWeight.bold : FontWeight.normal,
                   ),
                   onSelected: (selected) {
                     setState(() {
@@ -542,33 +579,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
               }).toList(),
             ),
             const SizedBox(height: 20),
-            
+
             // Contact Preference
             Text(
               'Método de Contacto Preferido',
-              style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+              style: theme.textTheme.bodyMedium
+                  ?.copyWith(fontWeight: FontWeight.w600),
             ),
-            Row(
-              children: [
-                Radio<String>(
-                  value: 'whatsapp',
-                  groupValue: _preferredContact,
-                  activeColor: AppColors.primaryDark,
-                  onChanged: (val) => setState(() => _preferredContact = val!),
-                ),
-                const Text('WhatsApp'),
-                const SizedBox(width: 16),
-                Radio<String>(
-                  value: 'call',
-                  groupValue: _preferredContact,
-                  activeColor: AppColors.primaryDark,
-                  onChanged: (val) => setState(() => _preferredContact = val!),
-                ),
-                const Text('Llamada'),
-              ],
+            RadioGroup<String>(
+              groupValue: _preferredContact,
+              onChanged: (val) {
+                if (val != null) setState(() => _preferredContact = val);
+              },
+              child: const Row(
+                children: [
+                  Radio<String>(
+                    value: 'whatsapp',
+                    activeColor: AppColors.primaryDark,
+                  ),
+                  Text('WhatsApp'),
+                  SizedBox(width: 16),
+                  Radio<String>(
+                    value: 'call',
+                    activeColor: AppColors.primaryDark,
+                  ),
+                  Text('Llamada'),
+                ],
+              ),
             ),
             const SizedBox(height: 20),
-            
+
             // Accept research terms (Variable X2 Usability requirement)
             CheckboxListTile(
               value: _acceptTerms,
@@ -601,7 +641,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               placeholder: 'Ej. Restaurante El Portón',
               controller: _businessNameController,
               prefixIcon: Icons.store_outlined,
-              validator: (val) => Validators.validateNotEmpty(val, 'La razón social'),
+              validator: (val) =>
+                  Validators.validateNotEmpty(val, 'La razón social'),
             ),
             const SizedBox(height: 20),
             AppTextField(
@@ -613,16 +654,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
               validator: Validators.validateRuc,
             ),
             const SizedBox(height: 20),
-            
+
             // Business Type
             Text(
               'Tipo de Negocio',
-              style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+              style: theme.textTheme.bodyMedium
+                  ?.copyWith(fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 6),
             DropdownButtonFormField<String>(
               initialValue: _selectedBusinessType,
-              decoration: const InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 16)),
+              decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16)),
               items: AppConstants.businessTypes.map((t) {
                 final disp = AppConstants.businessTypeNames[t] ?? t;
                 return DropdownMenuItem(value: t, child: Text(disp));
@@ -632,13 +675,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
               },
             ),
             const SizedBox(height: 20),
-            
+
             AppTextField(
               label: 'Dirección Principal de Entrega',
               placeholder: 'Ej. Calle Real 123, Huancayo',
               controller: _deliveryAddressController,
               prefixIcon: Icons.location_on_outlined,
-              validator: (val) => Validators.validateNotEmpty(val, 'La dirección'),
+              validator: (val) =>
+                  Validators.validateNotEmpty(val, 'La dirección'),
             ),
           ],
         ),

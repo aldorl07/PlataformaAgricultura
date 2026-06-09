@@ -45,7 +45,7 @@ class KpiCard extends StatelessWidget {
                     title,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w500,
-                      color: isDark ? Colors.white70 : AppColors.neutralDark.withOpacity(0.6),
+                      color: isDark ? Colors.white70 : AppColors.neutralDark.withValues(alpha: 0.6),
                     ),
                   ),
                 ),
@@ -53,7 +53,7 @@ class KpiCard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: (iconColor ?? AppColors.primaryDark).withOpacity(0.1),
+                      color: (iconColor ?? AppColors.primaryDark).withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Icon(

@@ -24,23 +24,32 @@ class _FarmerProductsScreenState extends State<FarmerProductsScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final auth = Provider.of<AuthProvider>(context, listen: false);
       if (auth.isAuthenticated) {
-        Provider.of<FarmerProvider>(context, listen: false).loadFarmerData(auth.currentUser!.id);
+        Provider.of<FarmerProvider>(context, listen: false)
+            .loadFarmerData(auth.currentUser!.id);
       }
     });
   }
 
-  void _showAddEditProductModal(BuildContext context, {ProductModel? existingProduct}) {
+  void _showAddEditProductModal(BuildContext context,
+      {ProductModel? existingProduct}) {
     final isEditing = existingProduct != null;
     final formKey = GlobalKey<FormState>();
-    final nameController = TextEditingController(text: existingProduct?.name ?? '');
-    final varietyController = TextEditingController(text: existingProduct?.variety ?? '');
-    final descriptionController = TextEditingController(text: existingProduct?.description ?? '');
-    final priceController = TextEditingController(text: existingProduct?.pricePerUnit.toString() ?? '');
-    final stockController = TextEditingController(text: existingProduct?.stock.toInt().toString() ?? '');
-    
-    String selectedCropType = existingProduct?.cropType ?? AppConstants.cropTypes.first;
+    final nameController =
+        TextEditingController(text: existingProduct?.name ?? '');
+    final varietyController =
+        TextEditingController(text: existingProduct?.variety ?? '');
+    final descriptionController =
+        TextEditingController(text: existingProduct?.description ?? '');
+    final priceController = TextEditingController(
+        text: existingProduct?.pricePerUnit.toString() ?? '');
+    final stockController = TextEditingController(
+        text: existingProduct?.stock.toInt().toString() ?? '');
+
+    String selectedCropType =
+        existingProduct?.cropType ?? AppConstants.cropTypes.first;
     String selectedUnit = existingProduct?.unit ?? AppConstants.units.first;
-    DateTime selectedHarvestDate = existingProduct?.harvestDate ?? DateTime.now();
+    DateTime selectedHarvestDate =
+        existingProduct?.harvestDate ?? DateTime.now();
 
     final farmerProvider = Provider.of<FarmerProvider>(context, listen: false);
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
@@ -68,26 +77,33 @@ class _FarmerProductsScreenState extends State<FarmerProductsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(
-                      isEditing ? 'Editar Cultivo Cosechado' : 'Publicar Nuevo Cultivo 🌾',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                      isEditing
+                          ? 'Editar Cultivo Cosechado'
+                          : 'Publicar Nuevo Cultivo 🌾',
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge
+                          ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 20),
-                    
                     AppTextField(
                       label: 'Nombre del Producto',
                       placeholder: 'Ej. Papa Yungay Orgánica de Altura',
                       controller: nameController,
-                      validator: (val) => Validators.validateNotEmpty(val, 'El nombre'),
+                      validator: (val) =>
+                          Validators.validateNotEmpty(val, 'El nombre'),
                     ),
                     const SizedBox(height: 16),
-
                     Row(
                       children: [
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text('Tipo de Cultivo', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
+                              const Text('Tipo de Cultivo',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 13)),
                               const SizedBox(height: 6),
                               DropdownButtonFormField<String>(
                                 initialValue: selectedCropType,
@@ -98,7 +114,9 @@ class _FarmerProductsScreenState extends State<FarmerProductsScreen> {
                                   );
                                 }).toList(),
                                 onChanged: (val) {
-                                  if (val != null) setModalState(() => selectedCropType = val);
+                                  if (val != null) {
+                                    setModalState(() => selectedCropType = val);
+                                  }
                                 },
                               ),
                             ],
@@ -110,22 +128,23 @@ class _FarmerProductsScreenState extends State<FarmerProductsScreen> {
                             label: 'Variedad',
                             placeholder: 'Ej. Yungay / Amarilla',
                             controller: varietyController,
-                            validator: (val) => Validators.validateNotEmpty(val, 'La variedad'),
+                            validator: (val) =>
+                                Validators.validateNotEmpty(val, 'La variedad'),
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 16),
-
                     AppTextField(
                       label: 'Descripción del Cultivo',
-                      placeholder: 'Explica las características de tu parcela o método de cosecha...',
+                      placeholder:
+                          'Explica las características de tu parcela o método de cosecha...',
                       controller: descriptionController,
                       maxLines: 3,
-                      validator: (val) => Validators.validateNotEmpty(val, 'La descripción'),
+                      validator: (val) =>
+                          Validators.validateNotEmpty(val, 'La descripción'),
                     ),
                     const SizedBox(height: 16),
-
                     Row(
                       children: [
                         Expanded(
@@ -133,7 +152,8 @@ class _FarmerProductsScreenState extends State<FarmerProductsScreen> {
                             label: 'Precio Unitario (S/.)',
                             placeholder: 'Ej. 1.50',
                             controller: priceController,
-                            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                            keyboardType: const TextInputType.numberWithOptions(
+                                decimal: true),
                             validator: Validators.validatePrice,
                           ),
                         ),
@@ -142,15 +162,21 @@ class _FarmerProductsScreenState extends State<FarmerProductsScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text('Unidad de Medida', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
+                              const Text('Unidad de Medida',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 13)),
                               const SizedBox(height: 6),
                               DropdownButtonFormField<String>(
                                 initialValue: selectedUnit,
                                 items: AppConstants.units.map((u) {
-                                  return DropdownMenuItem(value: u, child: Text(u));
+                                  return DropdownMenuItem(
+                                      value: u, child: Text(u));
                                 }).toList(),
                                 onChanged: (val) {
-                                  if (val != null) setModalState(() => selectedUnit = val);
+                                  if (val != null) {
+                                    setModalState(() => selectedUnit = val);
+                                  }
                                 },
                               ),
                             ],
@@ -159,7 +185,6 @@ class _FarmerProductsScreenState extends State<FarmerProductsScreen> {
                       ],
                     ),
                     const SizedBox(height: 16),
-
                     AppTextField(
                       label: 'Stock Disponible Inicial',
                       placeholder: 'Ej. 500',
@@ -168,13 +193,16 @@ class _FarmerProductsScreenState extends State<FarmerProductsScreen> {
                       validator: Validators.validateStock,
                     ),
                     const SizedBox(height: 24),
-
                     AppButton(
-                      text: isEditing ? 'Guardar Cambios' : 'Publicar en Catálogo',
+                      text: isEditing
+                          ? 'Guardar Cambios'
+                          : 'Publicar en Catálogo',
                       onPressed: () async {
                         if (formKey.currentState!.validate()) {
                           final product = ProductModel(
-                            id: isEditing ? existingProduct.id : 'prod_${DateTime.now().millisecondsSinceEpoch}',
+                            id: isEditing
+                                ? existingProduct.id
+                                : 'prod_${DateTime.now().millisecondsSinceEpoch}',
                             farmerId: authProvider.currentUser!.id,
                             name: nameController.text.trim(),
                             cropType: selectedCropType,
@@ -186,12 +214,15 @@ class _FarmerProductsScreenState extends State<FarmerProductsScreen> {
                             photos: isEditing ? existingProduct.photos : [],
                             harvestDate: selectedHarvestDate,
                             isActive: true,
-                            createdAt: isEditing ? existingProduct.createdAt : DateTime.now(),
+                            createdAt: isEditing
+                                ? existingProduct.createdAt
+                                : DateTime.now(),
                           );
 
                           bool success;
                           if (isEditing) {
-                            success = await farmerProvider.updateProduct(product);
+                            success =
+                                await farmerProvider.updateProduct(product);
                           } else {
                             success = await farmerProvider.addProduct(product);
                           }
@@ -200,7 +231,9 @@ class _FarmerProductsScreenState extends State<FarmerProductsScreen> {
                             Navigator.of(context).pop();
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text(isEditing ? 'Cultivo actualizado' : 'Cultivo publicado exitosamente'),
+                                content: Text(isEditing
+                                    ? 'Cultivo actualizado'
+                                    : 'Cultivo publicado exitosamente'),
                                 backgroundColor: AppColors.primaryLight,
                               ),
                             );
@@ -218,20 +251,24 @@ class _FarmerProductsScreenState extends State<FarmerProductsScreen> {
     );
   }
 
-  void _showDeleteConfirmation(BuildContext context, String productId, FarmerProvider farmerProvider) {
+  void _showDeleteConfirmation(
+      BuildContext context, String productId, FarmerProvider farmerProvider) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: const Text('Eliminar Cultivo'),
-          content: const Text('¿Está seguro de que desea retirar este producto del catálogo? (Se realizará un borrado lógico)'),
+          content: const Text(
+              '¿Está seguro de que desea retirar este producto del catálogo? (Se realizará un borrado lógico)'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
               child: const Text('Cancelar'),
             ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: AppColors.error, foregroundColor: Colors.white),
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.error,
+                  foregroundColor: Colors.white),
               onPressed: () async {
                 await farmerProvider.softDeleteProduct(productId);
                 if (context.mounted) Navigator.of(context).pop();
@@ -246,9 +283,6 @@ class _FarmerProductsScreenState extends State<FarmerProductsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-    
     final farmer = Provider.of<FarmerProvider>(context);
 
     return Scaffold(
@@ -269,9 +303,13 @@ class _FarmerProductsScreenState extends State<FarmerProductsScreen> {
                 children: [
                   Icon(Icons.eco_outlined, size: 64, color: Colors.grey[400]),
                   const SizedBox(height: 16),
-                  const Text('Aún no has publicado cultivos', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  const Text('Aún no has publicado cultivos',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
-                  const Text('Presiona el botón "+" para publicar tu primera cosecha', style: TextStyle(color: Colors.grey)),
+                  const Text(
+                      'Presiona el botón "+" para publicar tu primera cosecha',
+                      style: TextStyle(color: Colors.grey)),
                 ],
               ),
             )
@@ -280,16 +318,18 @@ class _FarmerProductsScreenState extends State<FarmerProductsScreen> {
               itemCount: farmer.myProducts.length,
               itemBuilder: (context, index) {
                 final product = farmer.myProducts[index];
-                
+
                 return Card(
                   margin: const EdgeInsets.only(bottom: 12),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
                   child: ListTile(
                     contentPadding: const EdgeInsets.all(12),
                     leading: CircleAvatar(
                       radius: 24,
-                      backgroundColor: AppColors.primaryDark.withOpacity(0.1),
-                      child: const Icon(Icons.eco, color: AppColors.primaryDark),
+                      backgroundColor: AppColors.primaryDark.withValues(alpha: 0.1),
+                      child:
+                          const Icon(Icons.eco, color: AppColors.primaryDark),
                     ),
                     title: Text(
                       product.name,
@@ -298,20 +338,24 @@ class _FarmerProductsScreenState extends State<FarmerProductsScreen> {
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Variedad: ${product.variety} | Cultivo: ${AppConstants.cropNames[product.cropType] ?? product.cropType}'),
+                        Text(
+                            'Variedad: ${product.variety} | Cultivo: ${AppConstants.cropNames[product.cropType] ?? product.cropType}'),
                         const SizedBox(height: 4),
                         Row(
                           children: [
                             Text(
                               'Precio: ${CurrencyFormatter.format(product.pricePerUnit)} / ${product.unit}',
-                              style: const TextStyle(fontWeight: FontWeight.bold),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(width: 12),
                             Text(
                               'Stock: ${product.stock.toInt()} ${product.unit}',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: product.stock < 30 ? AppColors.error : AppColors.primaryDark,
+                                color: product.stock < 30
+                                    ? AppColors.error
+                                    : AppColors.primaryDark,
                               ),
                             ),
                           ],
@@ -322,14 +366,18 @@ class _FarmerProductsScreenState extends State<FarmerProductsScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.edit_outlined, color: AppColors.info),
+                          icon: const Icon(Icons.edit_outlined,
+                              color: AppColors.info),
                           tooltip: 'Editar',
-                          onPressed: () => _showAddEditProductModal(context, existingProduct: product),
+                          onPressed: () => _showAddEditProductModal(context,
+                              existingProduct: product),
                         ),
                         IconButton(
-                          icon: const Icon(Icons.delete_outline, color: AppColors.error),
+                          icon: const Icon(Icons.delete_outline,
+                              color: AppColors.error),
                           tooltip: 'Eliminar',
-                          onPressed: () => _showDeleteConfirmation(context, product.id, farmer),
+                          onPressed: () => _showDeleteConfirmation(
+                              context, product.id, farmer),
                         ),
                       ],
                     ),

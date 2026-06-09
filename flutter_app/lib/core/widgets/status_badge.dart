@@ -18,37 +18,37 @@ class StatusBadge extends StatelessWidget {
 
     switch (status.toLowerCase()) {
       case 'pending':
-        backgroundColor = AppColors.warning.withOpacity(0.15);
+        backgroundColor = AppColors.warning.withValues(alpha: 0.15);
         textColor = AppColors.warning;
         label = 'Pendiente';
         icon = Icons.hourglass_empty;
         break;
       case 'approved':
-        backgroundColor = AppColors.info.withOpacity(0.15);
+        backgroundColor = AppColors.info.withValues(alpha: 0.15);
         textColor = AppColors.info;
         label = 'Aprobado';
         icon = Icons.check_circle_outline;
         break;
       case 'dispatched':
-        backgroundColor = AppColors.secondary.withOpacity(0.15);
+        backgroundColor = AppColors.secondary.withValues(alpha: 0.15);
         textColor = AppColors.secondary;
         label = 'Despachado';
         icon = Icons.local_shipping_outlined;
         break;
       case 'completed':
-        backgroundColor = AppColors.primaryLight.withOpacity(0.15);
+        backgroundColor = AppColors.primaryLight.withValues(alpha: 0.15);
         textColor = AppColors.primaryDark;
         label = 'Entregado';
         icon = Icons.handshake_outlined;
         break;
       case 'cancelled':
-        backgroundColor = AppColors.error.withOpacity(0.15);
+        backgroundColor = AppColors.error.withValues(alpha: 0.15);
         textColor = AppColors.error;
         label = 'Cancelado';
         icon = Icons.cancel_outlined;
         break;
       default:
-        backgroundColor = Colors.grey.withOpacity(0.15);
+        backgroundColor = Colors.grey.withValues(alpha: 0.15);
         textColor = Colors.grey;
         label = status;
         icon = Icons.help_outline;

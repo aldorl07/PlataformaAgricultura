@@ -69,7 +69,10 @@ class AppRouter {
         ),
         GoRoute(
           path: '/register',
-          builder: (context, state) => const RegisterScreen(),
+          builder: (context, state) {
+            final role = state.uri.queryParameters['role'];
+            return RegisterScreen(initialRole: role);
+          },
         ),
         GoRoute(
           path: '/catalog',
