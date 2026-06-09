@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/widgets/app_button.dart';
@@ -91,7 +90,7 @@ class _FarmerProductsScreenState extends State<FarmerProductsScreen> {
                               const Text('Tipo de Cultivo', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
                               const SizedBox(height: 6),
                               DropdownButtonFormField<String>(
-                                value: selectedCropType,
+                                initialValue: selectedCropType,
                                 items: AppConstants.cropTypes.map((c) {
                                   return DropdownMenuItem(
                                     value: c,
@@ -146,7 +145,7 @@ class _FarmerProductsScreenState extends State<FarmerProductsScreen> {
                               const Text('Unidad de Medida', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
                               const SizedBox(height: 6),
                               DropdownButtonFormField<String>(
-                                value: selectedUnit,
+                                initialValue: selectedUnit,
                                 items: AppConstants.units.map((u) {
                                   return DropdownMenuItem(value: u, child: Text(u));
                                 }).toList(),

@@ -1,0 +1,1 @@
+{"level":"error","message":"Error connecting to MongoDB: getaddrinfo ENOTFOUND mongodb","service":"chupaca-directo-api","timestamp":"2026-06-09 11:40:03"}

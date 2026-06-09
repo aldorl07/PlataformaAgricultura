@@ -7,7 +7,6 @@ import '../../../core/widgets/app_button.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../services/service_locator.dart';
 import '../../auth/providers/auth_provider.dart';
-import '../../quote/providers/cart_provider.dart';
 import '../../quote/models/order_model.dart';
 
 class BuyerOrdersScreen extends StatefulWidget {
@@ -80,7 +79,6 @@ class _BuyerOrdersScreenState extends State<BuyerOrdersScreen> with SingleTicker
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
 
     final activeOrders = _orders.where((o) => o.status != 'completed' && o.status != 'cancelled').toList();
     final pastOrders = _orders.where((o) => o.status == 'completed' || o.status == 'cancelled').toList();
@@ -195,7 +193,7 @@ class _BuyerOrdersScreenState extends State<BuyerOrdersScreen> with SingleTicker
                         ),
                         child: Text(
                           '💰 ¡Ahorraste S/. ${order.estimatedSavings.toStringAsFixed(2)} vs intermediarios tradicionales!',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: AppColors.primaryDark,
                             fontSize: 12,
                             fontWeight: FontWeight.bold,

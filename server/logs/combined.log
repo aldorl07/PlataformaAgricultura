@@ -8,3 +8,7 @@
 {"level":"info","message":"15 Productos creados para los agricultores.","service":"chupaca-directo-api","timestamp":"2026-06-04 16:07:42"}
 {"level":"info","message":"3 Pedidos completados y sus respectivos SalesLog creados.","service":"chupaca-directo-api","timestamp":"2026-06-04 16:07:42"}
 {"level":"info","message":"Eventos de telemetría de prueba creados.","service":"chupaca-directo-api","timestamp":"2026-06-04 16:07:43"}
+{"level":"info","message":"Server running in development mode on port 5000","service":"chupaca-directo-api","timestamp":"2026-06-09 11:32:22"}
+{"level":"info","message":"Server running in development mode on port 5000","service":"chupaca-directo-api","timestamp":"2026-06-09 11:35:11"}
+{"level":"info","message":"Server running in development mode on port 5000","service":"chupaca-directo-api","timestamp":"2026-06-09 11:39:33"}
+{"level":"error","message":"Error connecting to MongoDB: getaddrinfo ENOTFOUND mongodb","service":"chupaca-directo-api","timestamp":"2026-06-09 11:40:03"}

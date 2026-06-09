@@ -64,7 +64,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                   Text('Tipo de Cultivo', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
                   const SizedBox(height: 10),
                   DropdownButtonFormField<String>(
-                    value: catalog.selectedCropType,
+                    initialValue: catalog.selectedCropType,
                     items: ['todos', ...AppConstants.cropTypes].map((c) {
                       final name = c == 'todos' ? 'Todos los cultivos' : (AppConstants.cropNames[c] ?? c);
                       return DropdownMenuItem(value: c, child: Text(name));
@@ -79,7 +79,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                   Text('Comunidad de Origen', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
                   const SizedBox(height: 10),
                   DropdownButtonFormField<String>(
-                    value: catalog.selectedCommunity.isEmpty ? 'todos' : catalog.selectedCommunity,
+                    initialValue: catalog.selectedCommunity.isEmpty ? 'todos' : catalog.selectedCommunity,
                     items: [
                       const DropdownMenuItem(value: 'todos', child: Text('Todas las comunidades')),
                       ...AppConstants.communities.map((c) => DropdownMenuItem(value: c, child: Text(c))),
@@ -141,7 +141,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                     title: const Text('Solo Productores Verificados'),
                     subtitle: const Text('Muestra agricultores validados por UNCP'),
                     value: catalog.onlyVerified,
-                    activeColor: AppColors.primaryDark,
+                    activeThumbColor: AppColors.primaryDark,
                     contentPadding: EdgeInsets.zero,
                     onChanged: (val) {
                       catalog.setOnlyVerified(val);

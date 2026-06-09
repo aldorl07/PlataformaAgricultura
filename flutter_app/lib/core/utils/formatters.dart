@@ -16,8 +16,6 @@ class Formatters {
     decimalDigits: 0,
   );
 
-  static final NumberFormat _percent = NumberFormat.percentPattern('es_PE');
-
   static final DateFormat _dateShort = DateFormat('dd/MM/yyyy', 'es_PE');
   static final DateFormat _dateLong = DateFormat('d MMMM yyyy', 'es_PE');
   static final DateFormat _dateTime = DateFormat('dd/MM/yyyy HH:mm', 'es_PE');

@@ -74,13 +74,13 @@ class SkeletonLoader extends StatelessWidget {
 
   // Factory for a list item skeleton
   static Widget listItem() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Row(
         children: [
-          const SkeletonLoader(width: 60, height: 60, borderRadius: BorderRadius.all(Radius.circular(8))),
-          const SizedBox(width: 16),
-          const Expanded(
+          SkeletonLoader(width: 60, height: 60, borderRadius: BorderRadius.all(Radius.circular(8))),
+          SizedBox(width: 16),
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

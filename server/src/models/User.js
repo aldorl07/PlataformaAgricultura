@@ -73,7 +73,6 @@ const UserSchema = new mongoose.Schema({
 });
 
 // Indexes
-UserSchema.index({ email: 1 });
 UserSchema.index({ role: 1, 'farmerProfile.community': 1 });
 UserSchema.index({ 'farmerProfile.isVerified': 1 });
 

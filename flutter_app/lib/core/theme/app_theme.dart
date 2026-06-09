@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
 
@@ -122,7 +121,6 @@ class AppTheme {
         primary: AppColors.primaryLight,
         secondary: AppColors.secondaryLight,
         surface: Color(0xFF2A2A2A),
-        background: AppColors.neutralDark,
         error: AppColors.error,
         onPrimary: Colors.black,
         onSecondary: Colors.black,

@@ -200,7 +200,7 @@ class _QuoteSimulatorScreenState extends State<QuoteSimulatorScreen> {
                                     ),
                                     Text(
                                       CurrencyFormatter.format(item.lineTotal),
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: AppColors.primaryDark,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -245,7 +245,7 @@ class _QuoteSimulatorScreenState extends State<QuoteSimulatorScreen> {
                               style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
                             ),
                             DropdownButtonFormField<String>(
-                              value: cart.transportMethod,
+                              initialValue: cart.transportMethod,
                               decoration: const InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 16)),
                               items: const [
                                 DropdownMenuItem(value: 'shared_freight', child: Text('Flete compartido (S/. 80.00)')),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
 import '../../../services/service_locator.dart';
 import '../../catalog/models/product_model.dart';
 import '../../quote/models/order_model.dart';

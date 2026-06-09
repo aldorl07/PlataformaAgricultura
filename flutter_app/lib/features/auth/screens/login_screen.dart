@@ -163,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       // Google Sign In (mocked)
                       OutlinedButton.icon(
                         icon: Image.network(
-                          'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_\"G\"_logo.svg/1024px-Google_\"G\"_logo.svg.png',
+                          'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_"G"_logo.svg/1024px-Google_"G"_logo.svg.png',
                           height: 20,
                         ),
                         label: const Text('Iniciar sesión con Google'),

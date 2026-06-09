@@ -6,7 +6,6 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/kpi_card.dart';
 import '../../../core/widgets/status_badge.dart';
 import '../../../core/widgets/app_button.dart';
-import '../../../core/widgets/app_text_field.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../providers/farmer_provider.dart';
@@ -345,7 +344,7 @@ class _FarmerDashboardScreenState extends State<FarmerDashboardScreen> {
                                       const SizedBox(height: 12),
                                       Text(
                                         'Monto Total del Pedido: S/. ${order.totalAmount.toStringAsFixed(2)}',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: AppColors.primaryDark,
                                         ),

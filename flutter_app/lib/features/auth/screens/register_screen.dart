@@ -485,7 +485,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             const SizedBox(height: 6),
             DropdownButtonFormField<String>(
-              value: _selectedCommunity,
+              initialValue: _selectedCommunity,
               decoration: const InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 16)),
               items: AppConstants.communities.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
               onChanged: (val) {
@@ -621,7 +621,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             const SizedBox(height: 6),
             DropdownButtonFormField<String>(
-              value: _selectedBusinessType,
+              initialValue: _selectedBusinessType,
               decoration: const InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 16)),
               items: AppConstants.businessTypes.map((t) {
                 final disp = AppConstants.businessTypeNames[t] ?? t;

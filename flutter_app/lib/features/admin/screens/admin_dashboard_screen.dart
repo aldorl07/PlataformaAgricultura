@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
@@ -8,9 +7,6 @@ import 'package:intl/intl.dart' hide TextDirection;
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/constants/app_constants.dart';
-import '../../../core/utils/currency_formatter.dart';
-import '../../../core/widgets/kpi_card.dart';
-import '../../../core/widgets/status_badge.dart';
 import '../../../services/service_locator.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../models/sales_log_model.dart';
@@ -28,7 +24,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   List<SalesLogModel> _salesLogs = [];
   List<UserModel> _farmers = [];
   bool _isLoading = true;
-  String _selectedDistrict = 'Todos';
 
   @override
   void initState() {
@@ -472,7 +467,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                       DataCell(
                         Switch(
                           value: isVerified,
-                          activeColor: AppColors.primaryLight,
+                          activeThumbColor: AppColors.primaryLight,
                           onChanged: (val) => _toggleFarmerVerification(farmer, val),
                         ),
                       ),
