@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'service_interfaces.dart';
 import 'firebase_services.dart';
 import 'mock_services.dart';
+import 'package:chupaca_directo/firebase_options.dart';
 
 class ServiceLocator {
   static late final IAuthService authService;
@@ -12,7 +13,9 @@ class ServiceLocator {
   static Future<void> init() async {
     try {
       // Try to initialize Firebase
-      await Firebase.initializeApp();
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
       
       authService = FirebaseAuthService();
       firestoreService = FirebaseFirestoreService();
