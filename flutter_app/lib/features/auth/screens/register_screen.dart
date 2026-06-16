@@ -616,7 +616,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               controlAffinity: ListTileControlAffinity.leading,
               contentPadding: EdgeInsets.zero,
               title: Text(
-                'Autorizo el uso de mis datos para fines del estudio científico de rentabilidad agrícola (Proyecto UNCP Chupaca 2026).',
+                'Autorizo el uso de mis datos para fines del estudio científico de rentabilidad agrícola (Proyecto UC Chupaca 2026).',
                 style: theme.textTheme.bodySmall?.copyWith(fontSize: 11),
               ),
               onChanged: (val) => setState(() => _acceptTerms = val ?? false),

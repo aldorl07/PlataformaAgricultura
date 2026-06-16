@@ -27,7 +27,7 @@ const seedData = async () => {
       email: 'admin@chupacadirecto.pe',
       password: 'password123', // Will be hashed automatically by pre-save hook
       role: 'admin',
-      fullName: 'Administrador de Investigación UNCP',
+      fullName: 'Administrador de Investigación UC',
       phone: '+51964123456',
       preferredContact: 'email'
     });

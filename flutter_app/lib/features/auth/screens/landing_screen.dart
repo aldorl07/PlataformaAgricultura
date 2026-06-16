@@ -228,7 +228,7 @@ class LandingScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Taller de Investigación II · UNCP',
+                      'Taller de Investigación II · UC',
                       style: theme.textTheme.bodySmall?.copyWith(fontSize: 10),
                     ),
                   ],

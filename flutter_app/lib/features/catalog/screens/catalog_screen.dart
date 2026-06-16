@@ -155,7 +155,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                   SwitchListTile(
                     title: const Text('Solo Productores Verificados'),
                     subtitle:
-                        const Text('Muestra agricultores validados por UNCP'),
+                        const Text('Muestra agricultores validados por UC'),
                     value: catalog.onlyVerified,
                     activeThumbColor: AppColors.primaryDark,
                     contentPadding: EdgeInsets.zero,
@@ -346,7 +346,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
         maxCrossAxisExtent: 220,
-        childAspectRatio: 0.65,
+        childAspectRatio: 0.56,
         crossAxisSpacing: 12,
         mainAxisSpacing: 12,
       ),
@@ -378,7 +378,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
         maxCrossAxisExtent: 220,
-        childAspectRatio: 0.60,
+        childAspectRatio: 0.56,
         crossAxisSpacing: 12,
         mainAxisSpacing: 12,
       ),

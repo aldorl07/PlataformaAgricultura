@@ -81,7 +81,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       // Share dataset
       await Share.shareXFiles(
         [XFile(file.path)],
-        text: 'Exportación de datos de investigación Chupaca Directo - UNCP 2026',
+        text: 'Exportación de datos de investigación Chupaca Directo - UC 2026',
       );
     } catch (e) {
       if (mounted) {

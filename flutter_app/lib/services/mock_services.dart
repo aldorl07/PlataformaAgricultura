@@ -25,7 +25,7 @@ class MockDb {
       id: 'admin_1',
       email: 'admin@chupacadirecto.pe',
       role: 'admin',
-      fullName: 'Dr. Alejandro Torres (Investigador UNCP)',
+      fullName: 'Dr. Alejandro Torres (Investigador UC)',
       phone: '+51 964552211',
       preferredContact: 'email',
       createdAt: DateTime.now().subtract(const Duration(days: 30)),

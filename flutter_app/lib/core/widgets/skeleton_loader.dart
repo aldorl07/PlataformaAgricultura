@@ -52,18 +52,18 @@ class SkeletonLoader extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(12.0),
+            padding: EdgeInsets.all(10.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SkeletonLoader(width: 140, height: 16),
-                SizedBox(height: 8),
+                SizedBox(height: 4),
                 SkeletonLoader(width: 100, height: 12),
-                SizedBox(height: 12),
+                SizedBox(height: 4),
                 SkeletonLoader(width: 80, height: 20),
-                SizedBox(height: 8),
+                SizedBox(height: 4),
                 SkeletonLoader(width: 120, height: 14),
-                SizedBox(height: 12),
+                SizedBox(height: 10),
                 SkeletonLoader(
                     width: double.infinity,
                     height: 36,

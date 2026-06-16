@@ -166,7 +166,7 @@ class _ProductCardState extends State<ProductCard> {
                 ),
                 // Text details
                 Padding(
-                  padding: const EdgeInsets.all(12.0),
+                  padding: const EdgeInsets.all(10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -187,36 +187,37 @@ class _ProductCardState extends State<ProductCard> {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      const SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.baseline,
-                        textBaseline: TextBaseline.alphabetic,
-                        children: [
-                          Text(
-                            '${CurrencyFormatter.format(widget.product.pricePerUnit)} / ${widget.product.unit}',
-                            style: theme.textTheme.titleLarge?.copyWith(
-                              color: isDark ? AppColors.primaryLight : AppColors.primaryDark,
-                              fontWeight: FontWeight.bold,
-                            ),
+                      const SizedBox(height: 4),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          '${CurrencyFormatter.format(widget.product.pricePerUnit)} / ${widget.product.unit}',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: isDark ? AppColors.primaryLight : AppColors.primaryDark,
+                            fontWeight: FontWeight.bold,
                           ),
-                        ],
+                        ),
                       ),
-                      const SizedBox(height: 6),
+                      const SizedBox(height: 4),
                       Row(
                         children: [
                           Icon(Icons.inventory_2_outlined, color: stockColor, size: 14),
                           const SizedBox(width: 4),
-                          Text(
-                            '${widget.product.stock.toInt()} ${widget.product.unit} disp.',
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: stockColor,
-                              fontWeight: FontWeight.bold,
+                          Expanded(
+                            child: Text(
+                              '${widget.product.stock.toInt()} ${widget.product.unit} disp.',
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: stockColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 10),
                       SizedBox(
                         width: double.infinity,
                         height: 36,
@@ -230,9 +231,15 @@ class _ProductCardState extends State<ProductCard> {
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          child: Text(
-                            widget.product.stock > 0 ? 'Agregar a Cotización' : 'Sin Stock',
-                            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                widget.product.stock > 0 ? 'Agregar a Cotización' : 'Sin Stock',
+                                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                              ),
+                            ),
                           ),
                         ),
                       ),
