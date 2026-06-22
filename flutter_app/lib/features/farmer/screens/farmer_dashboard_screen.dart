@@ -160,7 +160,9 @@ class _FarmerDashboardScreenState extends State<FarmerDashboardScreen> {
                           MediaQuery.of(context).size.width > 600 ? 4 : 2,
                       crossAxisSpacing: 16,
                       mainAxisSpacing: 16,
-                      childAspectRatio: 1.4,
+                      childAspectRatio: MediaQuery.of(context).size.width > 600
+                          ? 1.4
+                          : (MediaQuery.of(context).size.width > 350 ? 1.15 : 0.95),
                       children: [
                         KpiCard(
                           title: 'Ventas del Mes',
@@ -263,22 +265,33 @@ class _FarmerDashboardScreenState extends State<FarmerDashboardScreen> {
                                   ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 8),
-                            const Row(
+                            const Wrap(
+                              spacing: 16,
+                              runSpacing: 8,
                               children: [
-                                Icon(Icons.circle,
-                                    color: Colors.grey, size: 14),
-                                SizedBox(width: 4),
-                                Text('Pre-Plataforma (Intermediarios)',
-                                    style: TextStyle(
-                                        fontSize: 11, color: Colors.grey)),
-                                SizedBox(width: 16),
-                                Icon(Icons.circle,
-                                    color: AppColors.primaryLight, size: 14),
-                                SizedBox(width: 4),
-                                Text('Con Plataforma (Venta Directa)',
-                                    style: TextStyle(
-                                        fontSize: 11,
-                                        color: AppColors.primaryLight)),
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(Icons.circle,
+                                        color: Colors.grey, size: 14),
+                                    SizedBox(width: 4),
+                                    Text('Pre-Plataforma (Intermediarios)',
+                                        style: TextStyle(
+                                            fontSize: 11, color: Colors.grey)),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(Icons.circle,
+                                        color: AppColors.primaryLight, size: 14),
+                                    SizedBox(width: 4),
+                                    Text('Con Plataforma (Venta Directa)',
+                                        style: TextStyle(
+                                            fontSize: 11,
+                                            color: AppColors.primaryLight)),
+                                  ],
+                                ),
                               ],
                             ),
                             const SizedBox(height: 24),

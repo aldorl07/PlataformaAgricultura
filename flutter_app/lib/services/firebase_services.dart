@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:typed_data';
+import 'package:firebase_storage/firebase_storage.dart' as fbs;
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -441,12 +443,16 @@ class FirebaseFirestoreService implements IFirestoreService {
 }
 
 class FirebaseStorageService implements IStorageService {
+  final fbs.FirebaseStorage _storage = fbs.FirebaseStorage.instance;
+
   @override
-  Future<String> uploadProductPhoto(String filePath) async {
-    // Real upload to Firebase Storage
-    // Using string/file upload (depending on environment)
-    // Here we represent it as a mock-fallback for testing if file can't be uploaded directly
-    throw UnimplementedError('Subida de imágenes nativa no configurada completamente');
+  Future<String> uploadProductPhoto(String name, Uint8List bytes) async {
+    final ref = _storage.ref().child('products').child(name);
+    final snapshot = await ref.putData(
+      bytes,
+      fbs.SettableMetadata(contentType: 'image/jpeg'),
+    );
+    return await snapshot.ref.getDownloadURL();
   }
 }
 

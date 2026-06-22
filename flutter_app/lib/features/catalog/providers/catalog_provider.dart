@@ -34,9 +34,19 @@ class CatalogProvider extends ChangeNotifier {
   double get minStock => _minStock;
   bool get onlyVerified => _onlyVerified;
 
-  CatalogProvider() {
-    loadCatalog();
+  String? _lastUserId;
+  bool _hasLoadedOnce = false;
+
+  CatalogProvider();
+
+  void updateAuth(String? userId) {
+    if (!_hasLoadedOnce || _lastUserId != userId) {
+      _hasLoadedOnce = true;
+      _lastUserId = userId;
+      loadCatalog();
+    }
   }
+
 
   void setSearchQuery(String val) {
     _searchQuery = val;

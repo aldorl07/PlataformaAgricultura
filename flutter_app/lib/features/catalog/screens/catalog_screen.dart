@@ -302,9 +302,11 @@ class _CatalogScreenState extends State<CatalogScreen> {
           Expanded(
             child: catalog.isLoading
                 ? _buildSkeletonGrid()
-                : catalog.products.isEmpty
-                    ? _buildEmptyState()
-                    : _buildProductGrid(catalog, cart),
+                : catalog.errorMessage != null
+                    ? _buildErrorState(catalog.errorMessage!)
+                    : catalog.products.isEmpty
+                        ? _buildEmptyState()
+                        : _buildProductGrid(catalog, cart),
           ),
         ],
       ),
@@ -369,6 +371,50 @@ class _CatalogScreenState extends State<CatalogScreen> {
           const Text('Pruebe modificando los filtros o el término de búsqueda',
               style: TextStyle(color: Colors.grey)),
         ],
+      ),
+    );
+  }
+
+  Widget _buildErrorState(String error) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.error_outline, size: 64, color: AppColors.error),
+            const SizedBox(height: 16),
+            Text(
+              'Error al cargar el catálogo',
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: isDark ? Colors.white : AppColors.neutralDark,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              error,
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: isDark ? Colors.white70 : Colors.black54,
+              ),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.refresh),
+              label: const Text('Reintentar'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryDark,
+                foregroundColor: Colors.white,
+              ),
+              onPressed: () {
+                Provider.of<CatalogProvider>(context, listen: false).loadCatalog();
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

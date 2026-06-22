@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import '../features/auth/models/user_model.dart';
 import '../features/catalog/models/product_model.dart';
 import '../features/quote/models/order_model.dart';
@@ -63,7 +64,7 @@ abstract class IFirestoreService {
 }
 
 abstract class IStorageService {
-  Future<String> uploadProductPhoto(String filePath);
+  Future<String> uploadProductPhoto(String name, Uint8List bytes);
 }
 
 abstract class ITelemetryService {

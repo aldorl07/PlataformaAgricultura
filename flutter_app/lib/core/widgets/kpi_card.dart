@@ -29,11 +29,14 @@ class KpiCard extends StatelessWidget {
     final trendColor = isPositive ? AppColors.primaryLight : AppColors.error;
     final trendIcon = isPositive ? Icons.arrow_upward : Icons.arrow_downward;
 
+    final screenWidth = MediaQuery.of(context).size.width;
+    final padding = screenWidth > 600 ? 16.0 : 12.0;
+
     return Card(
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(padding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -43,15 +46,18 @@ class KpiCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w500,
                       color: isDark ? Colors.white70 : AppColors.neutralDark.withValues(alpha: 0.6),
                     ),
                   ),
                 ),
-                if (icon != null)
+                if (icon != null) ...[
+                  const SizedBox(width: 4),
                   Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
                       color: (iconColor ?? AppColors.primaryDark).withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
@@ -59,52 +65,68 @@ class KpiCard extends StatelessWidget {
                     child: Icon(
                       icon,
                       color: iconColor ?? AppColors.primaryDark,
-                      size: 20,
+                      size: 18,
                     ),
                   ),
+                ],
               ],
             ),
-            const SizedBox(height: 8),
-            Text(
-              value,
-              style: theme.textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: isDark ? Colors.white : AppColors.neutralDark,
+            const SizedBox(height: 6),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerLeft,
+              child: Text(
+                value,
+                maxLines: 1,
+                style: theme.textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: isDark ? Colors.white : AppColors.neutralDark,
+                ),
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 6),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 if (trendPercentage != null)
-                  Row(
-                    children: [
-                      Icon(trendIcon, color: trendColor, size: 16),
-                      const SizedBox(width: 4),
-                      Text(
-                        '${trendPercentage!.abs().toStringAsFixed(1)}%',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: trendColor,
-                          fontWeight: FontWeight.bold,
-                        ),
+                  Expanded(
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(trendIcon, color: trendColor, size: 14),
+                          const SizedBox(width: 2),
+                          Text(
+                            '${trendPercentage!.abs().toStringAsFixed(1)}%',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: trendColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 11,
+                            ),
+                          ),
+                          const SizedBox(width: 2),
+                          Text(
+                            'vs mes ant.',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: isDark ? Colors.white54 : Colors.black45,
+                              fontSize: 10,
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 4),
-                      Text(
-                        'vs mes ant.',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: isDark ? Colors.white54 : Colors.black45,
-                        ),
-                      ),
-                    ],
+                    ),
                   )
                 else
                   const SizedBox(),
                 
                 // Sparkline
-                if (sparklineData != null && sparklineData!.isNotEmpty)
+                if (sparklineData != null && sparklineData!.isNotEmpty) ...[
+                  const SizedBox(width: 4),
                   SizedBox(
-                    width: 70,
-                    height: 24,
+                    width: 50,
+                    height: 18,
                     child: LineChart(
                       LineChartData(
                         gridData: const FlGridData(show: false),
@@ -133,6 +155,7 @@ class KpiCard extends StatelessWidget {
                       ),
                     ),
                   ),
+                ],
               ],
             ),
           ],

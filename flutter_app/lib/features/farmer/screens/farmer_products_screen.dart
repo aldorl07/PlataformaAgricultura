@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'dart:async';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import '../../../core/utils/camera_helper.dart';
+import '../../../services/service_locator.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/widgets/app_button.dart';
@@ -53,6 +58,81 @@ class _FarmerProductsScreenState extends State<FarmerProductsScreen> {
 
     final farmerProvider = Provider.of<FarmerProvider>(context, listen: false);
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
+
+    // Local state variables for image picker
+    Uint8List? selectedImageBytes;
+    String? selectedImageName;
+    List<String> currentPhotos = isEditing ? List.from(existingProduct.photos) : [];
+    bool isUploading = false;
+
+    Future<void> pickImage(ImageSource source, StateSetter setModalState) async {
+      try {
+        if (kIsWeb && source == ImageSource.camera) {
+          final webImage = await captureWebImage(context);
+          if (webImage != null) {
+            setModalState(() {
+              selectedImageBytes = webImage['bytes'] as Uint8List;
+              selectedImageName = webImage['name'] as String;
+            });
+          }
+          return;
+        }
+
+        final picker = ImagePicker();
+        final pickedFile = await picker.pickImage(
+          source: source,
+          maxWidth: 1024,
+          maxHeight: 1024,
+          imageQuality: 85,
+        );
+        if (pickedFile != null) {
+          final bytes = await pickedFile.readAsBytes();
+          setModalState(() {
+            selectedImageBytes = bytes;
+            selectedImageName = pickedFile.name;
+          });
+        }
+      } catch (e) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error al seleccionar imagen: $e'),
+              backgroundColor: AppColors.error,
+            ),
+          );
+        }
+      }
+    }
+
+    void showImageSourceSheet(StateSetter setModalState) {
+      showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return SafeArea(
+            child: Wrap(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.photo_library, color: AppColors.primaryDark),
+                  title: const Text('Galería'),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    pickImage(ImageSource.gallery, setModalState);
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.camera_alt, color: AppColors.primaryDark),
+                  title: const Text('Cámara'),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    pickImage(ImageSource.camera, setModalState);
+                  },
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
 
     showModalBottomSheet(
       context: context,
@@ -192,51 +272,163 @@ class _FarmerProductsScreenState extends State<FarmerProductsScreen> {
                       keyboardType: TextInputType.number,
                       validator: Validators.validateStock,
                     ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'Foto del Cultivo (Recomendado)',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    if (selectedImageBytes != null || currentPhotos.isNotEmpty)
+                      Stack(
+                        children: [
+                          Container(
+                            height: 160,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: Colors.grey.shade300),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: selectedImageBytes != null
+                                  ? Image.memory(selectedImageBytes!, fit: BoxFit.cover)
+                                  : Image.network(currentPhotos.first, fit: BoxFit.cover),
+                            ),
+                          ),
+                          Positioned(
+                            top: 8,
+                            right: 8,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.black.withValues(alpha: 0.6),
+                              radius: 18,
+                              child: IconButton(
+                                icon: const Icon(Icons.delete, color: Colors.white, size: 16),
+                                onPressed: () {
+                                  setModalState(() {
+                                    selectedImageBytes = null;
+                                    selectedImageName = null;
+                                    currentPhotos.clear();
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    else
+                      InkWell(
+                        onTap: () => showImageSourceSheet(setModalState),
+                        borderRadius: BorderRadius.circular(12),
+                        child: Container(
+                          height: 100,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: AppColors.primaryDark.withValues(alpha: 0.3),
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                            color: AppColors.primaryDark.withValues(alpha: 0.05),
+                          ),
+                          child: const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.add_a_photo_outlined, color: AppColors.primaryDark),
+                              SizedBox(height: 8),
+                              Text(
+                                'Añadir Foto del Cultivo',
+                                style: TextStyle(
+                                  color: AppColors.primaryDark,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     const SizedBox(height: 24),
                     AppButton(
                       text: isEditing
                           ? 'Guardar Cambios'
                           : 'Publicar en Catálogo',
+                      isLoading: isUploading,
                       onPressed: () async {
                         if (formKey.currentState!.validate()) {
-                          final product = ProductModel(
-                            id: isEditing
-                                ? existingProduct.id
-                                : 'prod_${DateTime.now().millisecondsSinceEpoch}',
-                            farmerId: authProvider.currentUser!.id,
-                            name: nameController.text.trim(),
-                            cropType: selectedCropType,
-                            variety: varietyController.text.trim(),
-                            description: descriptionController.text.trim(),
-                            unit: selectedUnit,
-                            pricePerUnit: double.parse(priceController.text),
-                            stock: double.parse(stockController.text),
-                            photos: isEditing ? existingProduct.photos : [],
-                            harvestDate: selectedHarvestDate,
-                            isActive: true,
-                            createdAt: isEditing
-                                ? existingProduct.createdAt
-                                : DateTime.now(),
-                          );
+                          setModalState(() {
+                            isUploading = true;
+                          });
 
-                          bool success;
-                          if (isEditing) {
-                            success =
-                                await farmerProvider.updateProduct(product);
-                          } else {
-                            success = await farmerProvider.addProduct(product);
-                          }
+                          try {
+                            List<String> photos = List.from(currentPhotos);
 
-                          if (success && context.mounted) {
-                            Navigator.of(context).pop();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(isEditing
-                                    ? 'Cultivo actualizado'
-                                    : 'Cultivo publicado exitosamente'),
-                                backgroundColor: AppColors.primaryLight,
-                              ),
+                            if (selectedImageBytes != null && selectedImageName != null) {
+                              final imageUrl = await ServiceLocator.storageService.uploadProductPhoto(
+                                selectedImageName!,
+                                selectedImageBytes!,
+                              ).timeout(
+                                const Duration(seconds: 12),
+                                onTimeout: () {
+                                  throw TimeoutException(
+                                    'La subida de la imagen expiró. Esto ocurre en Web si no se ha configurado CORS en Firebase Storage para permitir solicitudes desde localhost.'
+                                  );
+                                },
+                              );
+                              photos = [imageUrl];
+                            }
+
+                            final product = ProductModel(
+                              id: isEditing
+                                  ? existingProduct.id
+                                  : 'prod_${DateTime.now().millisecondsSinceEpoch}',
+                              farmerId: authProvider.currentUser!.id,
+                              name: nameController.text.trim(),
+                              cropType: selectedCropType,
+                              variety: varietyController.text.trim(),
+                              description: descriptionController.text.trim(),
+                              unit: selectedUnit,
+                              pricePerUnit: double.parse(priceController.text),
+                              stock: double.parse(stockController.text),
+                              photos: photos,
+                              harvestDate: selectedHarvestDate,
+                              isActive: true,
+                              createdAt: isEditing
+                                  ? existingProduct.createdAt
+                                  : DateTime.now(),
                             );
+
+                            bool success;
+                            if (isEditing) {
+                              success = await farmerProvider.updateProduct(product);
+                            } else {
+                              success = await farmerProvider.addProduct(product);
+                            }
+
+                            if (success && context.mounted) {
+                              Navigator.of(context).pop();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(isEditing
+                                      ? 'Cultivo actualizado'
+                                      : 'Cultivo publicado exitosamente'),
+                                  backgroundColor: AppColors.primaryLight,
+                                ),
+                              );
+                            }
+                          } catch (e) {
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Error al guardar: $e'),
+                                  backgroundColor: AppColors.error,
+                                ),
+                              );
+                            }
+                          } finally {
+                            setModalState(() {
+                              isUploading = false;
+                            });
                           }
                         }
                       },
@@ -341,14 +533,15 @@ class _FarmerProductsScreenState extends State<FarmerProductsScreen> {
                         Text(
                             'Variedad: ${product.variety} | Cultivo: ${AppConstants.cropNames[product.cropType] ?? product.cropType}'),
                         const SizedBox(height: 4),
-                        Row(
+                        Wrap(
+                          spacing: 12,
+                          runSpacing: 4,
                           children: [
                             Text(
                               'Precio: ${CurrencyFormatter.format(product.pricePerUnit)} / ${product.unit}',
                               style:
                                   const TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            const SizedBox(width: 12),
                             Text(
                               'Stock: ${product.stock.toInt()} ${product.unit}',
                               style: TextStyle(

@@ -27,7 +27,11 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProxyProvider<AuthProvider, CatalogProvider>(
           create: (_) => CatalogProvider(),
-          update: (_, auth, catalog) => catalog ?? CatalogProvider(),
+          update: (_, auth, catalog) {
+            final cat = catalog ?? CatalogProvider();
+            cat.updateAuth(auth.currentUser?.id);
+            return cat;
+          },
         ),
         ChangeNotifierProvider(create: (_) => CartProvider()),
         ChangeNotifierProvider(create: (_) => FarmerProvider()),

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 import 'service_interfaces.dart';
 import '../features/auth/models/user_model.dart';
 import '../features/catalog/models/product_model.dart';
@@ -20,6 +21,17 @@ class MockDb {
   static void initSeedData() {
     if (users.isNotEmpty) return; // already seeded
     
+    final cropPhotos = {
+      'papa': 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=500',
+      'maiz': 'https://images.unsplash.com/photo-1551754625-70c9048723ad?w=500',
+      'cebada': 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=500',
+      'habas': 'https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?w=500',
+      'hortalizas': 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=500',
+      'quinua': 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=500',
+      'arveja': 'https://images.unsplash.com/photo-1587570220977-83b3e2b202bb?w=500',
+      'otros': 'https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?w=500',
+    };
+
     // 1. Admin
     final admin = UserModel(
       id: 'admin_1',
@@ -100,7 +112,7 @@ class MockDb {
           unit: j == 0 ? 'kg' : (j == 1 ? 'saco' : 'arroba'),
           pricePerUnit: 1.20 + (j * 0.8) + (i * 0.3),
           stock: 150.0 + (j * 100) + (i * 50),
-          photos: [], // will use default icon/fallback in widget
+          photos: [cropPhotos[crop] ?? cropPhotos['otros']!],
           harvestDate: DateTime.now().subtract(Duration(days: j * 3)),
           isActive: true,
           createdAt: DateTime.now().subtract(Duration(days: j * 5)),
@@ -704,7 +716,7 @@ class MockFirestoreService implements IFirestoreService {
 
 class MockStorageService implements IStorageService {
   @override
-  Future<String> uploadProductPhoto(String filePath) async {
+  Future<String> uploadProductPhoto(String name, Uint8List bytes) async {
     await Future.delayed(const Duration(milliseconds: 500));
     // Return a dummy image url representing the upload
     return 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=500';
