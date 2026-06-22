@@ -51,7 +51,7 @@ workflows:
       - name: Build iOS App (Unsigned) and Package IPA
         script: |
           cd flutter_app
-          flutter build ios --release --no-codesign -- CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO PROVISIONING_PROFILE_REQUIRED=NO CODE_SIGN_IDENTITY=""
+          flutter build ios --release --no-codesign
           mkdir -p Payload
           cp -r build/ios/iphoneos/Runner.app Payload/
           zip -r ../Runner.ipa Payload
