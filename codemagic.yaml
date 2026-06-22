@@ -48,9 +48,13 @@ workflows:
         script: |
           cd flutter_app/ios
           pod install
-      - name: Build iOS App (Unsigned)
+      - name: Build iOS App (Unsigned) and Package IPA
         script: |
           cd flutter_app
-          flutter build ipa --release --no-codesign
+          flutter build ios --release --no-codesign -- CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO PROVISIONING_PROFILE_REQUIRED=NO CODE_SIGN_IDENTITY=""
+          mkdir -p Payload
+          cp -r build/ios/iphoneos/Runner.app Payload/
+          zip -r ../Runner.ipa Payload
+          rm -rf Payload
     artifacts:
-      - flutter_app/build/ios/ipa/*.ipa
+      - Runner.ipa
