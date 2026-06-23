@@ -1,35 +1,11 @@
 workflows:
-  android-workflow:
-    name: Android Build Workflow
+  flutter-build-workflow:
+    name: Flutter Android & iOS Build
     max_build_duration: 120
     instance_type: mac_mini_m2
     environment:
       vars:
         PACKAGE_NAME: "pe.edu.uncp.chupaca.chupacaDirecto"
-      flutter: stable
-    triggering:
-      events:
-        - push
-      branch_patterns:
-        - pattern: 'master'
-          include: true
-    scripts:
-      - name: Fetch Flutter Packages
-        script: |
-          cd flutter_app
-          flutter pub get
-      - name: Build Android APK
-        script: |
-          cd flutter_app
-          flutter build apk --release
-    artifacts:
-      - flutter_app/build/app/outputs/flutter-apk/*.apk
-
-  ios-workflow:
-    name: iOS Build Workflow
-    max_build_duration: 120
-    instance_type: mac_mini_m2
-    environment:
       flutter: stable
       xcode: latest
       cocoapods: default
@@ -40,15 +16,22 @@ workflows:
         - pattern: 'master'
           include: true
     scripts:
-      - name: Fetch Flutter Packages
+      - name: Disable Swift Package Manager (Workaround)
         script: |
           cd flutter_app
           flutter config --no-enable-swift-package-manager
+      - name: Fetch Flutter Packages
+        script: |
+          cd flutter_app
           flutter pub get
       - name: Install Cocoapods
         script: |
           cd flutter_app/ios
           pod install
+      - name: Build Android APK
+        script: |
+          cd flutter_app
+          flutter build apk --release
       - name: Build iOS App (Unsigned) and Package IPA
         script: |
           cd flutter_app
@@ -58,4 +41,5 @@ workflows:
           zip -r ../Runner.ipa Payload
           rm -rf Payload
     artifacts:
+      - flutter_app/build/app/outputs/flutter-apk/*.apk
       - Runner.ipa
